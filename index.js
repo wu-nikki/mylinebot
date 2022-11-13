@@ -6,7 +6,7 @@ import axios from 'axios'
 // import dd from './json/test.js'
 
 import bubble from './bubble.js'
-
+import { scheduleJob } from 'node-schedule'
 // import animalList from './animalList.js'
 
 const bot = linebot({
@@ -14,10 +14,11 @@ const bot = linebot({
   channelSecret: process.env.CHANNEL_SECRET,
   channelAccessToken: process.env.CHANNEL_ACCESS_TOKEN
 })
+
 // 1.建立一個整理過的資料
 const bubbles = []
 const a = async () => {
-  const { data } = await axios.get('https://data.coa.gov.tw/Service/OpenData/TransService.aspx?UnitId=QcbUEzN6E6DL&$top=100&$skip=0')
+  const { data } = await axios.get('https://data.coa.gov.tw/Service/OpenData/TransService.aspx?UnitId=QcbUEzN6E6DL&$top=1000&$skip=0')
   // const data = dd
   // fs.writeFileSync('test.json', JSON.stringify(data))
 
@@ -42,7 +43,7 @@ const a = async () => {
   // console.log(newList)
 
   // 全國動物收容管理系統 :https://asms.coa.gov.tw/Amlapp/App/Default.aspx
-  const msg = data.map((animal) => {
+  const msg = data.map(animal => {
     const out = {}
     out.img = animal.album_file
     out.size = animal.animal_bodytype === 'SMALL' ? '小型' : (animal.animal_bodytype === 'MEDIUM' ? '中型' : '大型')
@@ -61,8 +62,14 @@ const a = async () => {
   // 4.把3移進來 才會一起等
   // 3.陣列裝bubble 並把2放進來
   bubbles.length = 0
-  for (let i = 1; i <= 12; i++) {
-    const animal = msg[i]
+  // 隨機號碼0~999 最大999
+  const r = Math.floor(Math.random() * 100)
+  for (let i = r; i < (r + 12); i++) {
+    let it = i
+    if (i > 100) {
+      it = i - 100
+    } console.log(it)
+    const animal = msg[it]
     // console.log(animal.size + animal.color + animal.variety + animal.gender + animal.kind)
     // console.log(animal.place)
     // console.log(animal.add)
@@ -85,9 +92,23 @@ const a = async () => {
     bubbles.push(out)
   }
   // fs.writeFileSync('tt2.json', JSON.stringify(bubbles))
-}
 
-a()
+  bot.broadcast([
+    { type: 'text', text: '我們來啦~~~' },
+    {
+      type: 'flex',
+      altText: '毛孩推播~',
+      contents: {
+        type: 'carousel',
+        contents: bubbles
+      }
+    }
+  ]
+  )
+}
+scheduleJob(
+  ' * 6 * * *', a
+)
 
 // https://developers.line.biz/en/reference/messaging-api/#postback-action
 // fillInText能複製內容的按鈕
@@ -140,21 +161,21 @@ a()
 
 // const web = `https://asms.coa.gov.tw/Amlapp/App/AnnounceList.aspx?Id=${animal.webId}&AcceptNum=${animal.id}&PageType=Adopt`
 // bubble.contents.footer.contents[1].action.uri = web
-bot.on('message', e => {
-  if (e.message.type !== 'text') return
-  e.reply([
-    { type: 'text', text: e.message.text },
-    {
-      type: 'flex',
-      altText: 'this is a flex message',
-      contents: {
-        type: 'carousel',
-        contents: bubbles
-      }
-    }
-  ])
-})
+// bot.on('message', e => {
+//   if (e.message.type !== 'text') return
+//   e.reply([
+//     { type: 'text', text: e.message.text },
+//     {
+//       type: 'flex',
+//       altText: 'this is a flex message',
+//       contents: {
+//         type: 'carousel',
+//         contents: bubbles
+//       }
+//     }
+//   ])
+// })
 
-bot.listen('/', process.env.PORT || 3001, () => {
+bot.listen('/', process.env.PORT || 3002, () => {
   console.log('機器人啟動')
 })
