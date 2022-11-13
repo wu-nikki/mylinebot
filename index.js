@@ -7,7 +7,7 @@ import axios from 'axios'
 
 import bubble from './bubble.js'
 import { scheduleJob } from 'node-schedule'
-// import animalList from './animalList.js'
+// import animalList from './json/animalList.js'
 
 const bot = linebot({
   channelId: process.env.CHANNEL_ID,
@@ -94,7 +94,7 @@ const a = async () => {
   // fs.writeFileSync('tt2.json', JSON.stringify(bubbles))
 
   bot.broadcast([
-    { type: 'text', text: '我們來啦~~~' },
+    { type: 'text', text: '早安~我們來啦~~~' },
     {
       type: 'flex',
       altText: '毛孩推播~',
