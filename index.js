@@ -17,8 +17,36 @@ const bot = linebot({
 
 // 1.建立一個整理過的資料
 const bubbles = []
-const a = async () => {
-  const { data } = await axios.get('https://data.coa.gov.tw/Service/OpenData/TransService.aspx?UnitId=QcbUEzN6E6DL&$top=1000&$skip=0')
+let todayData
+
+const init = async () => {
+  // {data} 直接把物件的key是data的取出來
+  const { data } = await axios.get('https://data.coa.gov.tw/Service/OpenData/TransService.aspx?UnitId=QcbUEzN6E6DL&$top=&$skip=0')
+  const msg = data.map(animal => {
+    const out = {}
+    out.img = animal.album_file
+    out.size = animal.animal_bodytype === 'SMALL' ? '小型' : (animal.animal_bodytype === 'MEDIUM' ? '中型' : '大型')
+    out.color = animal.animal_colour
+    out.variety = (animal.animal_Variety === '混種貓' || (animal.animal_Variety === '混種狗')) ? '米克斯' : animal.animal_Variety
+    out.gender = animal.animal_sex === 'M' ? '公' : (animal.animal_sex === 'F' ? '母' : '未輸入')
+    out.kind = animal.animal_kind === '狗' ? '犬' : (animal.animal_kind === '貓' ? '貓' : '其他')
+    // 此id為收容編號
+    out.id = animal.animal_subid
+    out.place = animal.animal_place
+    out.add = animal.shelter_address
+    out.tel = animal.shelter_tel
+    out.webId = animal.animal_id
+    return out
+  })
+  todayData = msg
+}
+init()
+
+console.log(todayData)
+// 抓當下資料並廣播
+const broadcast = async () => {
+  // 抓當下資料並更新
+  await init()
   // const data = dd
   // fs.writeFileSync('test.json', JSON.stringify(data))
 
@@ -43,22 +71,23 @@ const a = async () => {
   // console.log(newList)
 
   // 全國動物收容管理系統 :https://asms.coa.gov.tw/Amlapp/App/Default.aspx
-  const msg = data.map(animal => {
-    const out = {}
-    out.img = animal.album_file
-    out.size = animal.animal_bodytype === 'SMALL' ? '小型' : (animal.animal_bodytype === 'MEDIUM' ? '中型' : '大型')
-    out.color = animal.animal_colour
-    out.variety = (animal.animal_Variety === '混種貓' || (animal.animal_Variety === '混種狗')) ? '米克斯' : animal.animal_Variety
-    out.gender = animal.animal_sex === 'M' ? '公' : (animal.animal_sex === 'F' ? '母' : '未輸入')
-    out.kind = animal.animal_kind === '狗' ? '犬' : (animal.animal_kind === '貓' ? '貓' : '其他')
-    // 此id為收容編號
-    out.id = animal.animal_subid
-    out.place = animal.animal_place
-    out.add = animal.shelter_address
-    out.tel = animal.shelter_tel
-    out.webId = animal.animal_id
-    return out
-  })
+  // const msg = data.map(animal => {
+  //   const out = {}
+  //   out.img = animal.album_file
+  //   out.size = animal.animal_bodytype === 'SMALL' ? '小型' : (animal.animal_bodytype === 'MEDIUM' ? '中型' : '大型')
+  //   out.color = animal.animal_colour
+  //   out.variety = (animal.animal_Variety === '混種貓' || (animal.animal_Variety === '混種狗')) ? '米克斯' : animal.animal_Variety
+  //   out.gender = animal.animal_sex === 'M' ? '公' : (animal.animal_sex === 'F' ? '母' : '未輸入')
+  //   out.kind = animal.animal_kind === '狗' ? '犬' : (animal.animal_kind === '貓' ? '貓' : '其他')
+  //   // 此id為收容編號
+  //   out.id = animal.animal_subid
+  //   out.place = animal.animal_place
+  //   out.add = animal.shelter_address
+  //   out.tel = animal.shelter_tel
+  //   out.webId = animal.animal_id
+  //   return out
+  // })
+
   // fs.writeFileSync('animalList.json', JSON.stringify(msg))
   // 4.把3移進來 才會一起等
   // 3.陣列裝bubble 並把2放進來
@@ -70,7 +99,7 @@ const a = async () => {
     if (i > 100) {
       it = i - 100
     } console.log(it)
-    const animal = msg[it]
+    const animal = todayData[it]
     // console.log(animal.size + animal.color + animal.variety + animal.gender + animal.kind)
     // console.log(animal.place)
     // console.log(animal.add)
@@ -107,9 +136,9 @@ const a = async () => {
   ]
   )
 }
-
+// TMD"每天"
 scheduleJob(
-  ' 0 8 * * *', a
+  ' 0 8 * * *', broadcast
 )
 
 // 5.新增打id搜尋
@@ -117,24 +146,9 @@ bot.on('message', async (e) => {
   if (e.message.type !== 'text') return
   if (e.message.type === 'text') {
     try {
-      const { data } = await axios.get('https://data.coa.gov.tw/Service/OpenData/TransService.aspx?UnitId=QcbUEzN6E6DL&$top=1000&$skip=0')
-      const msg = data.map(animal => {
-        const out = {}
-        out.img = animal.album_file
-        out.size = animal.animal_bodytype === 'SMALL' ? '小型' : (animal.animal_bodytype === 'MEDIUM' ? '中型' : '大型')
-        out.color = animal.animal_colour
-        out.variety = (animal.animal_Variety === '混種貓' || (animal.animal_Variety === '混種狗')) ? '米克斯' : animal.animal_Variety
-        out.gender = animal.animal_sex === 'M' ? '公' : (animal.animal_sex === 'F' ? '母' : '未輸入')
-        out.kind = animal.animal_kind === '狗' ? '犬' : (animal.animal_kind === '貓' ? '貓' : '其他')
-        out.id = animal.animal_subid
-        out.place = animal.animal_place
-        out.add = animal.shelter_address
-        out.tel = animal.shelter_tel
-        out.webId = animal.animal_id
-        return out
-      })
+      await init()
       bubbles.length = 0
-      const write = msg.find(texts => { return texts.id === e.message.text })
+      const write = todayData.find(texts => { return texts.id === e.message.text })
       console.log(typeof write.id)
       console.log(typeof e.message.text)
       // console.log(typeof 2)
@@ -144,6 +158,7 @@ bot.on('message', async (e) => {
       // console.log(typeof undefined)
       // console.log(typeof [])
       if (write) {
+        console.log(write)
         const out = JSON.parse(JSON.stringify(bubble))
         out.hero.url = write.img || 'https://upload.wikimedia.org/wikipedia/commons/8/83/Solid_white_bordered.svg'
 
@@ -160,7 +175,7 @@ bot.on('message', async (e) => {
 
         const web = `https://asms.coa.gov.tw/Amlapp/App/AnnounceList.aspx?Id=${write.webId}&AcceptNum=${write.id}&PageType=Adopt`
         out.footer.contents[1].action.uri = web
-
+        console.log(out)
         bubbles.push(out)
         e.reply(([
           { type: 'text', text: e.message.text },
