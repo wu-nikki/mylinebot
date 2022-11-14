@@ -39,10 +39,10 @@ const init = async () => {
     return out
   })
   todayData = msg
+  console.log('init OK' + todayData.length)
 }
 init()
 
-console.log(init)
 // 抓當下資料並廣播
 const broadcast = async () => {
   // 抓當下資料並更新
@@ -100,7 +100,7 @@ const broadcast = async () => {
       it = i - 100
     }
     console.log(it)
-    const animal = init[it]
+    const animal = todayData[it]
     // console.log(animal.size + animal.color + animal.variety + animal.gender + animal.kind)
     // console.log(animal.place)
     // console.log(animal.add)
@@ -151,7 +151,6 @@ bot.on('message', async (e) => {
       const write = todayData.find(texts => {
         return texts.id === e.message.text
       })
-      console.log(write.id)
       console.log(write)
       console.log(typeof e.message.text)
       // console.log(typeof 2)
@@ -161,7 +160,6 @@ bot.on('message', async (e) => {
       // console.log(typeof undefined)
       // console.log(typeof [])
       if (write) {
-        console.log(write)
         const out = JSON.parse(JSON.stringify(bubble))
         out.hero.url = write.img || 'https://upload.wikimedia.org/wikipedia/commons/8/83/Solid_white_bordered.svg'
 
