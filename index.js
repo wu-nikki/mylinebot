@@ -146,7 +146,6 @@ bot.on('message', async (e) => {
   if (e.message.type !== 'text') return
   if (e.message.type === 'text') {
     try {
-      await init()
       bubbles.length = 0
       const write = todayData.find(texts => { return texts.id === e.message.text })
       console.log(typeof write.id)
