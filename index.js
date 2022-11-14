@@ -148,9 +148,11 @@ bot.on('message', async (e) => {
   if (e.message.type === 'text') {
     try {
       bubbles.length = 0
-      const write = init.find(texts => { return texts.id === e.message.text })
+      const write = todayData.find(texts => {
+        return texts.id === e.message.text
+      })
       console.log(write.id)
-      console.log(typeof write.id)
+      console.log(write)
       console.log(typeof e.message.text)
       // console.log(typeof 2)
       // console.log(typeof true)
