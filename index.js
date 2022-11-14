@@ -42,7 +42,7 @@ const init = async () => {
 }
 init()
 
-// console.log(init)
+console.log(init)
 // 抓當下資料並廣播
 const broadcast = async () => {
   // 抓當下資料並更新
@@ -98,8 +98,9 @@ const broadcast = async () => {
     let it = i
     if (i > 100) {
       it = i - 100
-    } console.log(it)
-    const animal = todayData[it]
+    }
+    console.log(it)
+    const animal = init[it]
     // console.log(animal.size + animal.color + animal.variety + animal.gender + animal.kind)
     // console.log(animal.place)
     // console.log(animal.add)
@@ -147,7 +148,8 @@ bot.on('message', async (e) => {
   if (e.message.type === 'text') {
     try {
       bubbles.length = 0
-      const write = todayData.find(texts => { return texts.id === e.message.text })
+      const write = init.find(texts => { return texts.id === e.message.text })
+      console.log(write.id)
       console.log(typeof write.id)
       console.log(typeof e.message.text)
       // console.log(typeof 2)
