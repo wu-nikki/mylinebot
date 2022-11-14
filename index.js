@@ -21,7 +21,7 @@ let todayData
 
 const init = async () => {
   // {data} 直接把物件的key是data的取出來
-  const { data } = await axios.get('https://data.coa.gov.tw/Service/OpenData/TransService.aspx?UnitId=QcbUEzN6E6DL&$top=&$skip=0')
+  const { data } = await axios.get('https://data.coa.gov.tw/Service/OpenData/TransService.aspx?UnitId=QcbUEzN6E6DL&$top=1000&$skip=0')
   const msg = data.map(animal => {
     const out = {}
     out.img = animal.album_file
@@ -42,7 +42,7 @@ const init = async () => {
 }
 init()
 
-console.log(todayData)
+// console.log(init)
 // 抓當下資料並廣播
 const broadcast = async () => {
   // 抓當下資料並更新
@@ -178,7 +178,7 @@ bot.on('message', async (e) => {
         console.log(out)
         bubbles.push(out)
         e.reply(([
-          { type: 'text', text: e.message.text },
+          // { type: 'text', text: e.message.text },
           {
             type: 'flex',
             altText: '查詢~',
