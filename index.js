@@ -109,10 +109,10 @@ const a = async () => {
 }
 
 scheduleJob(
-  ' 0 6 * * *', a
+  ' 0 18 * * *', a
 )
 
-// 5.新增打字搜尋
+// 5.新增打id搜尋
 bot.on('message', async (e) => {
   if (e.message.type !== 'text') return
   if (e.message.type === 'text') {
@@ -134,7 +134,14 @@ bot.on('message', async (e) => {
         return out
       })
       const write = msg.find(texts => { return texts.id === e.message.text })
-      console.log(typeof write)
+      console.log(typeof write.id)
+      console.log(typeof e.message.text)
+      // console.log(typeof 2)
+      // console.log(typeof true)
+      // console.log(typeof {})
+      // console.log(typeof null)
+      // console.log(typeof undefined)
+      // console.log(typeof [])
       if (write) {
         const out = JSON.parse(JSON.stringify(bubble))
         out.hero.url = write.img || 'https://upload.wikimedia.org/wikipedia/commons/8/83/Solid_white_bordered.svg'
