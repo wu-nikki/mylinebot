@@ -109,7 +109,7 @@ const a = async () => {
 }
 
 scheduleJob(
-  ' 0 18 * * *', a
+  ' 25 18 * * *', a
 )
 
 // 5.新增打id搜尋
