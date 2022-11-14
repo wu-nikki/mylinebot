@@ -93,12 +93,6 @@ const a = async () => {
   }
   // fs.writeFileSync('tt2.json', JSON.stringify(bubbles))
 
-  // bot.on('message', e => {
-  //   if (e.message.type !== 'text') return
-  //   e.reply([
-  //     { type: 'text', text: e.message.text }])
-  // })
-
   bot.broadcast([
     { type: 'text', text: '早安~我們來啦~~~' },
     {
@@ -112,9 +106,70 @@ const a = async () => {
   ]
   )
 }
+
 scheduleJob(
   ' 50 8 * * *', a
 )
+
+// 5.新增打字搜尋
+bot.on('message', async (e) => {
+  if (e.message.type === 'text') {
+    try {
+      const { data } = await axios.get('https://data.coa.gov.tw/Service/OpenData/TransService.aspx?UnitId=QcbUEzN6E6DL&$top=1000&$skip=0')
+      const msg = data.map(animal => {
+        const out = {}
+        out.img = animal.album_file
+        out.size = animal.animal_bodytype === 'SMALL' ? '小型' : (animal.animal_bodytype === 'MEDIUM' ? '中型' : '大型')
+        out.color = animal.animal_colour
+        out.variety = (animal.animal_Variety === '混種貓' || (animal.animal_Variety === '混種狗')) ? '米克斯' : animal.animal_Variety
+        out.gender = animal.animal_sex === 'M' ? '公' : (animal.animal_sex === 'F' ? '母' : '未輸入')
+        out.kind = animal.animal_kind === '狗' ? '犬' : '貓'
+        out.id = animal.animal_subid
+        out.place = animal.animal_place
+        out.add = animal.shelter_address
+        out.tel = animal.shelter_tel
+        out.webId = animal.animal_id
+        return out
+      })
+      const write = msg.find(texts => { return texts.id === e.message.text })
+      if (write) {
+        const out = JSON.parse(JSON.stringify(bubble))
+        out.hero.url = write.img || 'https://upload.wikimedia.org/wikipedia/commons/8/83/Solid_white_bordered.svg'
+
+        out.body.contents[0].text = (write.size + write.color + write.variety + write.gender + write.kind)
+
+        out.body.contents[1].contents[0].contents[1].text = write.place
+        out.body.contents[1].contents[1].contents[1].text = write.add
+
+        const copyText = `---
+\n我的小名:${write.size + write.color + write.variety + write.gender + write.kind}\n收容編號:${write.id}
+\n收容所名稱:${write.place}  \n收容所電話:${write.tel} \n收容所地址:${write.add} \n---`
+
+        out.footer.contents[0].action.fillInText = copyText
+
+        const web = `https://asms.coa.gov.tw/Amlapp/App/AnnounceList.aspx?Id=${write.webId}&AcceptNum=${write.id}&PageType=Adopt`
+        out.footer.contents[1].action.uri = web
+        bubbles.push(out)
+        e.reply([
+          { type: 'text', text: e.message.text },
+          {
+            type: 'flex',
+            altText: '查詢~',
+            contents: {
+              type: 'bubble',
+              contents: bubbles
+            }
+          }
+        ])
+      } else {
+        e.reply('找不到課程')
+      }
+    } catch (error) {
+      console.log(error)
+      e.reply('發生錯誤，請稍後再試')
+    }
+  }
+})
 
 // https://developers.line.biz/en/reference/messaging-api/#postback-action
 // fillInText能複製內容的按鈕
