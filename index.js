@@ -93,6 +93,12 @@ const a = async () => {
   }
   // fs.writeFileSync('tt2.json', JSON.stringify(bubbles))
 
+  bot.on('message', e => {
+    if (e.message.type !== 'text') return
+    e.reply([
+      { type: 'text', text: e.message.text }])
+  })
+
   bot.broadcast([
     { type: 'text', text: '早安~我們來啦~~~' },
     {
@@ -176,6 +182,6 @@ scheduleJob(
 //   ])
 // })
 
-bot.listen('/', process.env.PORT || 3002, () => {
+bot.listen('/', process.env.PORT || 3003, () => {
   console.log('機器人啟動')
 })
