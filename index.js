@@ -50,7 +50,7 @@ const a = async () => {
     out.color = animal.animal_colour
     out.variety = (animal.animal_Variety === '混種貓' || (animal.animal_Variety === '混種狗')) ? '米克斯' : animal.animal_Variety
     out.gender = animal.animal_sex === 'M' ? '公' : (animal.animal_sex === 'F' ? '母' : '未輸入')
-    out.kind = animal.animal_kind === '狗' ? '犬' : '貓'
+    out.kind = animal.animal_kind === '狗' ? '犬' : (animal.animal_kind === '貓' ? '貓' : '其他')
     // 此id為收容編號
     out.id = animal.animal_subid
     out.place = animal.animal_place
@@ -125,7 +125,7 @@ bot.on('message', async (e) => {
         out.color = animal.animal_colour
         out.variety = (animal.animal_Variety === '混種貓' || (animal.animal_Variety === '混種狗')) ? '米克斯' : animal.animal_Variety
         out.gender = animal.animal_sex === 'M' ? '公' : (animal.animal_sex === 'F' ? '母' : '未輸入')
-        out.kind = animal.animal_kind === '狗' ? '犬' : '貓'
+        out.kind = animal.animal_kind === '狗' ? '犬' : (animal.animal_kind === '貓' ? '貓' : '其他')
         out.id = animal.animal_subid
         out.place = animal.animal_place
         out.add = animal.shelter_address
@@ -134,6 +134,7 @@ bot.on('message', async (e) => {
         return out
       })
       const write = msg.find(texts => { return texts.id === e.message.text })
+      console.log(typeof write)
       if (write) {
         const out = JSON.parse(JSON.stringify(bubble))
         out.hero.url = write.img || 'https://upload.wikimedia.org/wikipedia/commons/8/83/Solid_white_bordered.svg'
