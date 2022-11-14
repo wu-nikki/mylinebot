@@ -51,6 +51,7 @@ const a = async () => {
     out.variety = (animal.animal_Variety === '混種貓' || (animal.animal_Variety === '混種狗')) ? '米克斯' : animal.animal_Variety
     out.gender = animal.animal_sex === 'M' ? '公' : (animal.animal_sex === 'F' ? '母' : '未輸入')
     out.kind = animal.animal_kind === '狗' ? '犬' : '貓'
+    // 此id為收容編號
     out.id = animal.animal_subid
     out.place = animal.animal_place
     out.add = animal.shelter_address
@@ -113,6 +114,7 @@ scheduleJob(
 
 // 5.新增打字搜尋
 bot.on('message', async (e) => {
+  if (e.message.type !== 'text') return
   if (e.message.type === 'text') {
     try {
       const { data } = await axios.get('https://data.coa.gov.tw/Service/OpenData/TransService.aspx?UnitId=QcbUEzN6E6DL&$top=1000&$skip=0')
@@ -131,6 +133,7 @@ bot.on('message', async (e) => {
         out.webId = animal.animal_id
         return out
       })
+
       const write = msg.find(texts => { return texts.id === e.message.text })
       if (write) {
         const out = JSON.parse(JSON.stringify(bubble))
@@ -149,20 +152,20 @@ bot.on('message', async (e) => {
 
         const web = `https://asms.coa.gov.tw/Amlapp/App/AnnounceList.aspx?Id=${write.webId}&AcceptNum=${write.id}&PageType=Adopt`
         out.footer.contents[1].action.uri = web
-        bubbles.push(out)
-        e.reply([
+
+        bubbles.reply(([
           { type: 'text', text: e.message.text },
           {
             type: 'flex',
             altText: '查詢~',
             contents: {
-              type: 'bubble',
+              type: 'carousel',
               contents: bubbles
             }
           }
-        ])
+        ]))
       } else {
-        e.reply('找不到課程')
+        e.reply('找不到')
       }
     } catch (error) {
       console.log(error)
