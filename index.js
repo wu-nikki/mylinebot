@@ -109,7 +109,7 @@ const a = async () => {
 }
 
 scheduleJob(
-  ' 25 19 * * *', a
+  ' 50 19 * * *', a
 )
 
 // 5.新增打id搜尋
@@ -178,7 +178,7 @@ bot.on('message', async (e) => {
       }
     } catch (error) {
       console.log(error)
-      e.reply('發生錯誤，請稍後再試')
+      e.reply('毛孩可能被領養囉~請找別隻喔~')
     }
   }
 })
