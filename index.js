@@ -109,7 +109,7 @@ const a = async () => {
 }
 
 scheduleJob(
-  ' 50 8 * * *', a
+  ' 0 6 * * *', a
 )
 
 // 5.新增打字搜尋
@@ -133,7 +133,6 @@ bot.on('message', async (e) => {
         out.webId = animal.animal_id
         return out
       })
-
       const write = msg.find(texts => { return texts.id === e.message.text })
       if (write) {
         const out = JSON.parse(JSON.stringify(bubble))
@@ -153,7 +152,8 @@ bot.on('message', async (e) => {
         const web = `https://asms.coa.gov.tw/Amlapp/App/AnnounceList.aspx?Id=${write.webId}&AcceptNum=${write.id}&PageType=Adopt`
         out.footer.contents[1].action.uri = web
 
-        bubbles.reply(([
+        bubbles.push(out)
+        e.reply(([
           { type: 'text', text: e.message.text },
           {
             type: 'flex',
