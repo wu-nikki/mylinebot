@@ -93,11 +93,11 @@ const a = async () => {
   }
   // fs.writeFileSync('tt2.json', JSON.stringify(bubbles))
 
-  bot.on('message', e => {
-    if (e.message.type !== 'text') return
-    e.reply([
-      { type: 'text', text: e.message.text }])
-  })
+  // bot.on('message', e => {
+  //   if (e.message.type !== 'text') return
+  //   e.reply([
+  //     { type: 'text', text: e.message.text }])
+  // })
 
   bot.broadcast([
     { type: 'text', text: '早安~我們來啦~~~' },
@@ -113,7 +113,7 @@ const a = async () => {
   )
 }
 scheduleJob(
-  ' * 6 * * *', a
+  ' 50 8 * * *', a
 )
 
 // https://developers.line.biz/en/reference/messaging-api/#postback-action
