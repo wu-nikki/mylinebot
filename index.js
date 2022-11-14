@@ -109,7 +109,7 @@ const a = async () => {
 }
 
 scheduleJob(
-  ' 25 18 * * *', a
+  ' 25 19 * * *', a
 )
 
 // 5.新增打id搜尋
@@ -133,6 +133,7 @@ bot.on('message', async (e) => {
         out.webId = animal.animal_id
         return out
       })
+      bubbles.length = 0
       const write = msg.find(texts => { return texts.id === e.message.text })
       console.log(typeof write.id)
       console.log(typeof e.message.text)
