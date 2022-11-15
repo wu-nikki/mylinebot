@@ -141,7 +141,7 @@ const broadcast = async () => {
 }
 // TMD"每天"
 scheduleJob(
-  ' 47 8 * * *', broadcast
+  ' 57 8 * * *', broadcast
 )
 
 // 5.新增打id搜尋
