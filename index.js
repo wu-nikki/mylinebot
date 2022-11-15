@@ -145,6 +145,7 @@ scheduleJob(
 )
 
 // 5.新增打id搜尋
+
 bot.on('message', async (e) => {
   if (e.message.type !== 'text') return
   if (e.message.type === 'text') {
@@ -181,15 +182,15 @@ bot.on('message', async (e) => {
         console.log(out) // ngrol 有
         bubbles.push(out)
         e.reply(([
-          // { type: 'text', text: e.message.text },
-          {
-            type: 'flex',
-            altText: '查詢~',
-            contents: {
-              type: 'carousel',
-              contents: bubbles
-            }
-          }
+          { type: 'text', text: e.message.text }
+          // {
+          //   type: 'flex',
+          //   altText: '查詢~',
+          //   contents: {
+          //     type: 'carousel',
+          //     contents: bubbles
+          //   }
+          // }
         ]))
       } else {
         e.reply('找不到')
