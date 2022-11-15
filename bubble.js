@@ -13,7 +13,7 @@ export default {
     aspectMode: 'fit',
     action: {
       type: 'uri',
-      uri: 'http://linecorp.com/'
+      uri: ''
     }
   },
   body: {

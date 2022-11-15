@@ -120,6 +120,7 @@ const broadcast = async () => {
 
     const web = `https://asms.coa.gov.tw/Amlapp/App/AnnounceList.aspx?Id=${animal.webId}&AcceptNum=${animal.id}&PageType=Adopt`
     out.footer.contents[1].action.uri = web
+    out.hero.action.uri = web
     bubbles.push(out)
   }
   // fs.writeFileSync('tt2.json', JSON.stringify(bubbles))
@@ -177,6 +178,7 @@ bot.on('message', async (e) => {
 
         const web = `https://asms.coa.gov.tw/Amlapp/App/AnnounceList.aspx?Id=${write.webId}&AcceptNum=${write.id}&PageType=Adopt`
         out.footer.contents[1].action.uri = web
+        out.hero.action.uri = web
         console.log(out)
         bubbles.push(out)
         e.reply(([
