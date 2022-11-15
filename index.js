@@ -125,6 +125,7 @@ const broadcast = async () => {
   // fs.writeFileSync('tt2.json', JSON.stringify(bubbles))
 
   bot.broadcast([
+    { type: 'text', text: '目前是ngrok測試' },
     { type: 'text', text: '早安~我們來啦~~~' },
     {
       type: 'flex',
@@ -139,7 +140,7 @@ const broadcast = async () => {
 }
 // TMD"每天"
 scheduleJob(
-  ' 0 8 * * *', broadcast
+  ' 40 8 * * *', broadcast
 )
 
 // 5.新增打id搜尋
