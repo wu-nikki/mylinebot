@@ -99,7 +99,7 @@ const broadcast = async () => {
     if (i > 100) {
       it = i - 100
     }
-    console.log(it)
+    // console.log(it)
     const animal = todayData[it]
     // console.log(animal.size + animal.color + animal.variety + animal.gender + animal.kind)
     // console.log(animal.place)
@@ -149,10 +149,13 @@ bot.on('message', async (e) => {
   if (e.message.type !== 'text') return
   if (e.message.type === 'text') {
     try {
+      await init()
       bubbles.length = 0
       const write = todayData.find(texts => {
         return texts.id === e.message.text
       })
+
+      console.log(write)
       console.log(write)
       console.log(typeof e.message.text)
       // console.log(typeof 2)
