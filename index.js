@@ -155,15 +155,11 @@ bot.on('message', async (e) => {
         return texts.id === e.message.text
       })
 
-      console.log(write)
-      console.log(write)
-      console.log(typeof e.message.text)
-      // console.log(typeof 2)
-      // console.log(typeof true)
-      // console.log(typeof {})
-      // console.log(typeof null)
-      // console.log(typeof undefined)
-      // console.log(typeof [])
+      // console.log(todayData) ngrok 有
+      console.log(write) // ngrol 有
+      console.log(e.message.text)// ngrol 有
+      console.log(typeof e.message.text)// ngrol 有
+
       if (write) {
         const out = JSON.parse(JSON.stringify(bubble))
         out.hero.url = write.img || 'https://upload.wikimedia.org/wikipedia/commons/8/83/Solid_white_bordered.svg'
@@ -182,7 +178,7 @@ bot.on('message', async (e) => {
         const web = `https://asms.coa.gov.tw/Amlapp/App/AnnounceList.aspx?Id=${write.webId}&AcceptNum=${write.id}&PageType=Adopt`
         out.footer.contents[1].action.uri = web
         out.hero.action.uri = web
-        console.log(out)
+        console.log(out) // ngrol 有
         bubbles.push(out)
         e.reply(([
           // { type: 'text', text: e.message.text },
