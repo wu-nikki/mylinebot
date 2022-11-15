@@ -143,49 +143,61 @@ const broadcast = async () => {
 scheduleJob(
   ' 57 8 * * *', broadcast
 )
-// !讓網址就過濾的資料
-// https://data.coa.gov.tw/Service/OpenData/TransService.aspx?UnitId=QcbUEzN6E6DL&$top=3000&$skip=0$filter=animal_caption=%20%20&animal_sex=M&animal_kind=%E7%8B%97&animal_colour=%E9%BB%91%E8%89%B2
-
-const filter = async () => {
-  // {data} 直接把物件的key是data的取出來
-  const { data } = await axios.get('https://data.coa.gov.tw/Service/OpenData/TransService.aspx?UnitId=QcbUEzN6E6DL&$top=1000&$skip=0')
-  const msg = data.map(animal => {
-    const out = {}
-    out.img = animal.album_file
-    out.size = animal.animal_bodytype === 'SMALL' ? '小型' : (animal.animal_bodytype === 'MEDIUM' ? '中型' : '大型')
-    out.color = animal.animal_colour
-    out.variety = (animal.animal_Variety === '混種貓' || (animal.animal_Variety === '混種狗')) ? '米克斯' : animal.animal_Variety
-    out.gender = animal.animal_sex === 'M' ? '公' : (animal.animal_sex === 'F' ? '母' : '未輸入')
-    out.kind = animal.animal_kind === '狗' ? '犬' : (animal.animal_kind === '貓' ? '貓' : '其他')
-    // 此id為收容編號
-    out.id = animal.animal_subid
-    out.place = animal.animal_place
-    out.add = animal.shelter_address
-    out.tel = animal.shelter_tel
-    out.webId = animal.animal_id
-    return out
-  })
-  todayData = msg
-  console.log(' filter OK' + todayData.length)
-}
-filter()
+// ----------------------------------------------------------------------------------------------------------------------
 
 // 5.新增打id搜尋
-
 bot.on('message', async (e) => {
   if (e.message.type !== 'text') return
   if (e.message.type === 'text') {
     try {
-      await filter()
+      // !讓網址就過濾的資料
+      // 1.體型 animal_bodytype /顏色 animal_colour /種類 animal_kind /地址 shelter_address
+      // 2.網址轉碼 encodeURI編碼 (中文轉成UTF-8) ，decodeURI(UTF-8轉中文)
+      // 3.放入搜尋
+      const searchText = e.message.text.split(['/'])
+      console.log(searchText[0])
+      console.log(searchText[1])
+      console.log(searchText[2])
+      console.log(searchText[3])
+      const bodyType = searchText[0] === '小型' ? 'SMALL' : searchText[0] === '中型' ? 'MEDIUML' : 'BIG'
+      // 編碼的使用例子 const encodedStr = encodeURI('這是中文字串')
+      const encoded0 = encodeURI(bodyType)
+      const encoded1 = encodeURI(searchText[1])
+      const encoded2 = encodeURI(searchText[2])
+      const Http = `https://data.coa.gov.tw/Service/OpenData/TransService.aspx?UnitId=QcbUEzN6E6DL&$top=3000&$skip=0$filter=animal_caption=%20%20&animal_bodytype=${encoded0}&animal_colour=${encoded1}&animal_kind=${encoded2}`
+      console.log(Http)
+      // const filter = async () => {
+      // {data} 直接把物件的key是data的取出來
+      const { data } = await axios.get(`${Http}`)
+      const msg = data.map(animal => {
+        const out = {}
+        out.img = animal.album_file
+        out.size = animal.animal_bodytype === 'SMALL' ? '小型' : (animal.animal_bodytype === 'MEDIUM' ? '中型' : '大型')
+        out.color = animal.animal_colour
+        out.variety = (animal.animal_Variety === '混種貓' || (animal.animal_Variety === '混種狗')) ? '米克斯' : animal.animal_Variety
+        out.gender = animal.animal_sex === 'M' ? '公' : (animal.animal_sex === 'F' ? '母' : '未輸入')
+        out.kind = animal.animal_kind === '狗' ? '犬' : (animal.animal_kind === '貓' ? '貓' : '其他')
+        // 此id為收容編號
+        out.id = animal.animal_subid
+        out.place = animal.animal_place
+        out.add = animal.shelter_address
+        out.tel = animal.shelter_tel
+        out.webId = animal.animal_id
+        return out
+      })
+      todayData = msg
+      // console.log(' filter OK' + todayData.length)
+      // }
+      // filter()
 
       bubbles.length = 0
-      const write = todayData.find(texts => {
-        return texts.id === e.message.text
-      })
+      const write = todayData.filter(texts => {
+        return new RegExp(searchText[3]).test(texts.add)
+      })// []
 
-      // console.log(todayData) ngrok 有
-      console.log(write) // ngrol 有
+      // console.log(todayData) // ngrok 有
       console.log(e.message.text)// ngrol 有
+      console.log(write) // ngrol 有
       console.log(typeof e.message.text)// ngrol 有
 
       if (write) {
@@ -220,11 +232,11 @@ bot.on('message', async (e) => {
           }
         ]))
       } else {
-        e.reply('找不到')
+        e.reply('毛孩可能被領養囉~請找別隻喔~')
       }
     } catch (error) {
       console.log(error)
-      e.reply('毛孩可能被領養囉~請找別隻喔~')
+      e.reply('等等')
     }
   }
 })
