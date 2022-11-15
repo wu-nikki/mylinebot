@@ -143,6 +143,32 @@ const broadcast = async () => {
 scheduleJob(
   ' 57 8 * * *', broadcast
 )
+// !讓網址就過濾的資料
+// https://data.coa.gov.tw/Service/OpenData/TransService.aspx?UnitId=QcbUEzN6E6DL&$top=3000&$skip=0$filter=animal_caption=%20%20&animal_sex=M&animal_kind=%E7%8B%97&animal_colour=%E9%BB%91%E8%89%B2
+
+const filter = async () => {
+  // {data} 直接把物件的key是data的取出來
+  const { data } = await axios.get('https://data.coa.gov.tw/Service/OpenData/TransService.aspx?UnitId=QcbUEzN6E6DL&$top=1000&$skip=0')
+  const msg = data.map(animal => {
+    const out = {}
+    out.img = animal.album_file
+    out.size = animal.animal_bodytype === 'SMALL' ? '小型' : (animal.animal_bodytype === 'MEDIUM' ? '中型' : '大型')
+    out.color = animal.animal_colour
+    out.variety = (animal.animal_Variety === '混種貓' || (animal.animal_Variety === '混種狗')) ? '米克斯' : animal.animal_Variety
+    out.gender = animal.animal_sex === 'M' ? '公' : (animal.animal_sex === 'F' ? '母' : '未輸入')
+    out.kind = animal.animal_kind === '狗' ? '犬' : (animal.animal_kind === '貓' ? '貓' : '其他')
+    // 此id為收容編號
+    out.id = animal.animal_subid
+    out.place = animal.animal_place
+    out.add = animal.shelter_address
+    out.tel = animal.shelter_tel
+    out.webId = animal.animal_id
+    return out
+  })
+  todayData = msg
+  console.log(' filter OK' + todayData.length)
+}
+filter()
 
 // 5.新增打id搜尋
 
@@ -150,7 +176,8 @@ bot.on('message', async (e) => {
   if (e.message.type !== 'text') return
   if (e.message.type === 'text') {
     try {
-      await init()
+      await filter()
+
       bubbles.length = 0
       const write = todayData.find(texts => {
         return texts.id === e.message.text
@@ -182,15 +209,15 @@ bot.on('message', async (e) => {
         console.log(out) // ngrol 有
         bubbles.push(out)
         e.reply(([
-          { type: 'text', text: e.message.text }
-          // {
-          //   type: 'flex',
-          //   altText: '查詢~',
-          //   contents: {
-          //     type: 'carousel',
-          //     contents: bubbles
-          //   }
-          // }
+          { type: 'text', text: e.message.text },
+          {
+            type: 'flex',
+            altText: '查詢~',
+            contents: {
+              type: 'carousel',
+              contents: bubbles
+            }
+          }
         ]))
       } else {
         e.reply('找不到')
