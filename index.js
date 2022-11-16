@@ -141,11 +141,10 @@ const broadcast = async () => {
 }
 // TMD"每天"
 scheduleJob(
-  ' 57 8 * * *', broadcast
+  ' 20 9 * * *', broadcast
 )
-// ----------------------------------------------------------------------------------------------------------------------
+// -------------------------------------------------------5.輸入條件搜尋--------------------------------------------------------
 
-// 5.新增打id搜尋
 bot.on('message', async (e) => {
   if (e.message.type !== 'text') return
   if (e.message.type === 'text') {
@@ -159,14 +158,14 @@ bot.on('message', async (e) => {
       console.log(searchText[1])
       console.log(searchText[2])
       console.log(searchText[3])
-      const bodyType = searchText[0] === '小型' ? 'SMALL' : searchText[0] === '中型' ? 'MEDIUML' : 'BIG'
+      const bodyType = searchText[0] === '小型' ? 'SMALL' : searchText[0] === '中型' ? 'MEDIUM' : 'BIG'
       // 編碼的使用例子 const encodedStr = encodeURI('這是中文字串')
       const encoded0 = encodeURI(bodyType)
       const encoded1 = encodeURI(searchText[1])
       const encoded2 = encodeURI(searchText[2])
       const Http = `https://data.coa.gov.tw/Service/OpenData/TransService.aspx?UnitId=QcbUEzN6E6DL&$top=3000&$skip=0$filter=animal_caption=%20%20&animal_bodytype=${encoded0}&animal_colour=${encoded1}&animal_kind=${encoded2}`
       console.log(Http)
-      // const filter = async () => {
+
       // {data} 直接把物件的key是data的取出來
       const { data } = await axios.get(`${Http}`)
       const msg = data.map(animal => {
@@ -185,43 +184,51 @@ bot.on('message', async (e) => {
         out.webId = animal.animal_id
         return out
       })
+      // 將包含過濾過資料的物件更新進todayData
       todayData = msg
-      // console.log(' filter OK' + todayData.length)
-      // }
-      // filter()
 
       bubbles.length = 0
+      // -------------------新增地址 shelter_address搜尋--------------------------------------------------------
       const write = todayData.filter(texts => {
         return new RegExp(searchText[3]).test(texts.add)
-      })// []
-
+      })
       // console.log(todayData) // ngrok 有
-      console.log(e.message.text)// ngrol 有
-      console.log(write) // ngrol 有
-      console.log(typeof e.message.text)// ngrol 有
+      // console.log(e.message.text)// ngrol 有
+      // console.log(write) // ngrol 有
+      // console.log(typeof e.message.text)// ngrol 有
+      console.log(write.length)
+      // --------------------------用write.length的長度=0 --------------------------------------------------
+      if (write.length == 0) {
+        e.reply(
+          {
+            type: 'text',
+            text: '此縣市沒有您搜尋的毛孩喔~建議更改體型再搜尋看看喔'
+          })
+      }
+      // --------------------------用write.length的長度 <=12 --------------------------------------------------
+      if (write.length <= 12) {
+        for (let i = 0; i < write.length; i++) {
+          const out = JSON.parse(JSON.stringify(bubble))
+          out.hero.url = write[i].img || 'https://upload.wikimedia.org/wikipedia/commons/8/83/Solid_white_bordered.svg'
 
-      if (write) {
-        const out = JSON.parse(JSON.stringify(bubble))
-        out.hero.url = write.img || 'https://upload.wikimedia.org/wikipedia/commons/8/83/Solid_white_bordered.svg'
+          out.body.contents[0].text = (write[i].size + write[i].color + write[i].variety + write[i].gender + write[i].kind)
 
-        out.body.contents[0].text = (write.size + write.color + write.variety + write.gender + write.kind)
+          out.body.contents[1].contents[0].contents[1].text = write[i].place
+          out.body.contents[1].contents[1].contents[1].text = write[i].add
 
-        out.body.contents[1].contents[0].contents[1].text = write.place
-        out.body.contents[1].contents[1].contents[1].text = write.add
+          const copyText = `---
+\n我的小名:${write[i].size + write[i].color + write[i].variety + write[i].gender + write[i].kind}\n收容編號:${write[i].id}
+\n收容所名稱:${write[i].place}  \n收容所電話:${write[i].tel} \n收容所地址:${write[i].add} \n---`
 
-        const copyText = `---
-\n我的小名:${write.size + write.color + write.variety + write.gender + write.kind}\n收容編號:${write.id}
-\n收容所名稱:${write.place}  \n收容所電話:${write.tel} \n收容所地址:${write.add} \n---`
+          out.footer.contents[0].action.fillInText = copyText
 
-        out.footer.contents[0].action.fillInText = copyText
-
-        const web = `https://asms.coa.gov.tw/Amlapp/App/AnnounceList.aspx?Id=${write.webId}&AcceptNum=${write.id}&PageType=Adopt`
-        out.footer.contents[1].action.uri = web
-        out.hero.action.uri = web
-        console.log(out) // ngrol 有
-        bubbles.push(out)
-        e.reply(([
-          { type: 'text', text: e.message.text },
+          const web = `https://asms.coa.gov.tw/Amlapp/App/AnnounceList.aspx?Id=${write[i].webId}&AcceptNum=${write[i].id}&PageType=Adopt`
+          out.footer.contents[1].action.uri = web
+          out.hero.action.uri = web
+          console.log(out)
+          bubbles.push(out)
+        } e.reply(([
+          { type: 'text', text: `搜尋到${write.length}隻毛孩喔~` },
           {
             type: 'flex',
             altText: '查詢~',
@@ -231,12 +238,102 @@ bot.on('message', async (e) => {
             }
           }
         ]))
-      } else {
-        e.reply('毛孩可能被領養囉~請找別隻喔~')
       }
+
+      // --------------------------用write.length的長度取隨機數 >12 --------------------------------------------------
+      if (write.length > 12) {
+        // 如果write.length=13
+        //  舉例1.(0.01*13)=0.13，無條件捨去 index=0
+        //  舉例2.(0.99*13)=12.9，無條件捨去 index=12
+        const index = Math.floor(Math.random() * write.length)
+        console.log(index)
+
+        for (let i = index; i < (index + 12); i++) {
+          // 1. i=0 ;i<(0+12);i++ =>0,1,2,3,4,5,6,7,8,9,10,11
+          // 2. i=12 ;i<(12+12);i++=>12,13,14,15,16,17,18,19,20,21,22,23 (爆了)
+          let it = i
+          // 2. 如果i=13 -> >=13 ->13-13 =>it=0
+          // 2. 如果i=14 -> >=13 ->14-13 =>it=1
+          if (i >= (write.length)) {
+            it = i - index
+          }
+          console.log(it)
+          const num = write[it]
+          console.log(num)
+          const out = JSON.parse(JSON.stringify(bubble))
+          out.hero.url = num.img || 'https://upload.wikimedia.org/wikipedia/commons/8/83/Solid_white_bordered.svg'
+
+          out.body.contents[0].text = (num.size + num.color + num.variety + num.gender + num.kind)
+
+          out.body.contents[1].contents[0].contents[1].text = num.place
+          out.body.contents[1].contents[1].contents[1].text = num.add
+
+          const copyText = `---
+\n我的小名:${num.size + num.color + num.variety + num.gender + num.kind}\n收容編號:${num.id}
+\n收容所名稱:${num.place}  \n收容所電話:${num.tel} \n收容所地址:${num.add} \n---`
+
+          out.footer.contents[0].action.fillInText = copyText
+
+          const web = `https://asms.coa.gov.tw/Amlapp/App/AnnounceList.aspx?Id=${num.webId}&AcceptNum=${num.id}&PageType=Adopt`
+          out.footer.contents[1].action.uri = web
+          out.hero.action.uri = web
+          console.log(out)
+          bubbles.push(out)
+        } e.reply(([
+          {
+            type: 'text', text: `搜尋到${write.length}隻毛孩喔~ 
+這是其中12隻喔~`
+          },
+          {
+            type: 'flex',
+            altText: '查詢~',
+            contents: {
+              type: 'carousel',
+              contents: bubbles
+            }
+          }
+        ]))
+      }
+
+      //       {
+      //         if (write) {
+      //           const out = JSON.parse(JSON.stringify(bubble))
+      //           out.hero.url = write.img || 'https://upload.wikimedia.org/wikipedia/commons/8/83/Solid_white_bordered.svg'
+
+      //           out.body.contents[0].text = (write.size + write.color + write.variety + write.gender + write.kind)
+
+      //           out.body.contents[1].contents[0].contents[1].text = write.place
+      //           out.body.contents[1].contents[1].contents[1].text = write.add
+
+      //           const copyText = `---
+      // \n我的小名:${write.size + write.color + write.variety + write.gender + write.kind}\n收容編號:${write.id}
+      // \n收容所名稱:${write.place}  \n收容所電話:${write.tel} \n收容所地址:${write.add} \n---`
+
+      //           out.footer.contents[0].action.fillInText = copyText
+
+      //           const web = `https://asms.coa.gov.tw/Amlapp/App/AnnounceList.aspx?Id=${write.webId}&AcceptNum=${write.id}&PageType=Adopt`
+      //           out.footer.contents[1].action.uri = web
+      //           out.hero.action.uri = web
+      //           // console.log(out) // ngrol 有
+      //           bubbles.push(out)
+      //           e.reply(([
+      //             { type: 'text', text: e.message.text },
+      //             {
+      //               type: 'flex',
+      //               altText: '查詢~',
+      //               contents: {
+      //                 type: 'carousel',
+      //                 contents: bubbles
+      //               }
+      //             }
+      //           ]))
+      //         } else {
+      //           e.reply('毛孩可能被領養囉~請找別隻喔~')
+      //         }
+      //       }
     } catch (error) {
       console.log(error)
-      e.reply('等等')
+      e.reply('輸入條件有誤~')
     }
   }
 })
@@ -307,6 +404,6 @@ bot.on('message', async (e) => {
 //   ])
 // })
 
-bot.listen('/', process.env.PORT || 3003, () => {
+bot.listen('/', process.env.PORT || 3000, () => {
   console.log('機器人啟動')
 })
