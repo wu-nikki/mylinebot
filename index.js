@@ -198,7 +198,7 @@ bot.on('message', async (e) => {
       // console.log(typeof e.message.text)// ngrol 有
       console.log(write.length)
       // --------------------------用write.length的長度=0 --------------------------------------------------
-      if (write.length == 0) {
+      if (write.length === 0) {
         e.reply(
           {
             type: 'text',
@@ -232,7 +232,7 @@ bot.on('message', async (e) => {
           { type: 'text', text: `搜尋到${write.length}隻毛孩喔~` },
           {
             type: 'flex',
-            altText: '查詢~',
+            altText: `查詢${searchText[0] + searchText[1] + searchText[2] + (searchText[3] || '')}的毛孩`,
             contents: {
               type: 'carousel',
               contents: bubbles
@@ -240,7 +240,10 @@ bot.on('message', async (e) => {
           }
         ]))
       }
-
+      // console.log(searchText[0])
+      // console.log(searchText[1])
+      // console.log(searchText[2])
+      // console.log(searchText[3])
       // --------------------------用write.length的長度取隨機數 >12 --------------------------------------------------
       if (write.length > 12) {
         // 如果write.length=13
@@ -287,7 +290,8 @@ bot.on('message', async (e) => {
           },
           {
             type: 'flex',
-            altText: '查詢~',
+            altText: `查詢${searchText[0] + searchText[1] + searchText[2] + (searchText[3] || '')}的毛孩`,
+
             contents: {
               type: 'carousel',
               contents: bubbles
@@ -306,7 +310,7 @@ bot.on('message', async (e) => {
       //           out.body.contents[1].contents[0].contents[1].text = write.place
       //           out.body.contents[1].contents[1].contents[1].text = write.add
 
-      //           const copyText = `---
+      //           const copyText = `-- -
       // \n我的小名:${write.size + write.color + write.variety + write.gender + write.kind}\n收容編號:${write.id}
       // \n收容所名稱:${write.place}  \n收容所電話:${write.tel} \n收容所地址:${write.add} \n---`
 
@@ -357,7 +361,7 @@ bot.on('message', async (e) => {
 //   out.body.contents[1].contents[0].contents[1].text = animal.place
 //   out.body.contents[1].contents[1].contents[1].text = animal.add
 
-//   const copyText = `---
+//   const copyText = `-- -
 // \n我的小名:${animal.size + animal.color + animal.variety + animal.gender + animal.kind}\n收容編號:${animal.id}
 // \n收容所名稱:${animal.place}  \n收容所電話:${animal.tel} \n收容所地址:${animal.add} \n---`
 
