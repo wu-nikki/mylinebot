@@ -6,6 +6,7 @@ import axios from 'axios'
 // import dd from './json/test.js'
 
 import bubble from './bubble.js'
+import confirm from './confirm.js'
 import { scheduleJob } from 'node-schedule'
 // import animalList from './json/animalList.js'
 
@@ -17,6 +18,7 @@ const bot = linebot({
 
 // 1.建立一個整理過的資料
 const bubbles = []
+const onYes = []
 let todayData
 
 const init = async () => {
@@ -245,6 +247,7 @@ bot.on('message', async (e) => {
       // console.log(searchText[2])
       // console.log(searchText[3])
       // --------------------------用write.length的長度取隨機數 >12 --------------------------------------------------
+      // const more = {
       if (write.length > 12) {
         // 如果write.length=13
         //  舉例1.(0.01*13)=0.13，無條件捨去 index=0
@@ -283,23 +286,43 @@ bot.on('message', async (e) => {
           out.hero.action.uri = web
           console.log(out)
           bubbles.push(out)
+          // ------------------------
+          if (bubbles.length === 12) {
+            const agrain = JSON.parse(JSON.stringify(confirm))
+            const copyMsg =
+              `${searchText[0] + '/' + searchText[1] + '/' + searchText[2] + '/' + (searchText[3] || '')
+              } `
+            console.log(copyMsg)
+            agrain.actions[0].text = copyMsg
+            console.log(agrain)
+            onYes.push(agrain)
+          }
         } e.reply(([
           {
-            type: 'text', text: `搜尋到${write.length}隻毛孩喔~ 
-這是其中12隻喔~`
+            type: 'text', text: `搜尋到${write.length}隻毛孩喔~
+          這是其中12隻喔~`
           },
           {
             type: 'flex',
-            altText: `查詢${searchText[0] + searchText[1] + searchText[2] + (searchText[3] || '')}的毛孩`,
+            altText: `查詢${searchText[0] + searchText[1] + searchText[2] + (searchText[3] || '')} 的毛孩`,
 
             contents: {
               type: 'carousel',
               contents: bubbles
             }
+          },
+          {
+            type: 'template',
+            altText: 'this is a confirm template',
+            template: {
+              onYes
+            }
           }
+
         ]))
       }
 
+      // more()
       //       {
       //         if (write) {
       //           const out = JSON.parse(JSON.stringify(bubble))
