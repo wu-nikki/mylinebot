@@ -6,7 +6,7 @@ import axios from 'axios'
 // import dd from './json/test.js'
 
 import bubble from './bubble.js'
-import confirm from './confirm.js'
+
 import { scheduleJob } from 'node-schedule'
 // import animalList from './json/animalList.js'
 
@@ -18,7 +18,7 @@ const bot = linebot({
 
 // 1.建立一個整理過的資料
 const bubbles = []
-const onYes = []
+
 let todayData
 
 const init = async () => {
@@ -143,7 +143,7 @@ const broadcast = async () => {
 }
 // TMD"每天"
 scheduleJob(
-  ' 30 01 * * *', broadcast
+  ' 01 17 * * *', broadcast
 )
 // -------------------------------------------------------5.輸入條件搜尋--------------------------------------------------------
 
@@ -193,7 +193,8 @@ bot.on('message', async (e) => {
       // -------------------新增地址 shelter_address搜尋--------------------------------------------------------
       const write = todayData.filter(texts => {
         return new RegExp(searchText[3]).test(texts.add)
-      })
+      }
+      )
       // console.log(todayData) // ngrok 有
       // console.log(e.message.text)// ngrol 有
       // console.log(write) // ngrol 有
@@ -207,6 +208,7 @@ bot.on('message', async (e) => {
             text: `建議更改體型或顏色再搜尋看看，
 此縣市沒有您搜尋的毛孩喔~`
           })
+        return
       }
       // --------------------------用write.length的長度 <=12 --------------------------------------------------
       if (write.length <= 12) {
@@ -228,7 +230,7 @@ bot.on('message', async (e) => {
           const web = `https://asms.coa.gov.tw/Amlapp/App/AnnounceList.aspx?Id=${write[i].webId}&AcceptNum=${write[i].id}&PageType=Adopt`
           out.footer.contents[1].action.uri = web
           out.hero.action.uri = web
-          console.log(out)
+          // console.log(out)
           bubbles.push(out)
         } e.reply(([
           { type: 'text', text: `搜尋到${write.length}隻毛孩喔~` },
@@ -241,6 +243,7 @@ bot.on('message', async (e) => {
             }
           }
         ]))
+        return
       }
       // console.log(searchText[0])
       // console.log(searchText[1])
@@ -264,9 +267,9 @@ bot.on('message', async (e) => {
           if (i >= (write.length)) {
             it = i - index
           }
-          console.log(it)
+          // console.log(it)
           const num = write[it]
-          console.log(num)
+          // console.log(num)
           const out = JSON.parse(JSON.stringify(bubble))
           out.hero.url = num.img || 'https://upload.wikimedia.org/wikipedia/commons/8/83/Solid_white_bordered.svg'
 
@@ -284,23 +287,12 @@ bot.on('message', async (e) => {
           const web = `https://asms.coa.gov.tw/Amlapp/App/AnnounceList.aspx?Id=${num.webId}&AcceptNum=${num.id}&PageType=Adopt`
           out.footer.contents[1].action.uri = web
           out.hero.action.uri = web
-          console.log(out)
+          // console.log(out)
           bubbles.push(out)
-          // ------------------------
-          if (bubbles.length === 12) {
-            const agrain = JSON.parse(JSON.stringify(confirm))
-            const copyMsg =
-              `${searchText[0] + '/' + searchText[1] + '/' + searchText[2] + '/' + (searchText[3] || '')
-              } `
-            console.log(copyMsg)
-            agrain.actions[0].text = copyMsg
-            console.log(agrain)
-            onYes.push(agrain)
-          }
         } e.reply(([
           {
             type: 'text', text: `搜尋到${write.length}隻毛孩喔~
-          這是其中12隻喔~`
+這是其中12隻喔~`
           },
           {
             type: 'flex',
@@ -311,18 +303,43 @@ bot.on('message', async (e) => {
               contents: bubbles
             }
           },
+          // , {
+
+          //   type: 'postback',
+          //   label: '再12隻嗎?',
+          //   data: 'action=&itemid=111',
+          //   // displayText: 'Buy',
+          //   inputOption: 'openKeyboard',
+          //   fillInText: `${searchText[0] + '/' + searchText[1] + '/' + searchText[2] + '/' + (searchText[3] || '')
+          //     } `
+          // }
+
           {
             type: 'template',
             altText: 'this is a confirm template',
             template: {
-              onYes
+              type: 'confirm',
+              text: '再12隻嗎?',
+              actions: [
+                {
+                  type: 'message',
+                  label: '好',
+                  text: `${searchText[0] + '/' + searchText[1] + '/' + searchText[2] + '/' + (searchText[3] || '')
+                    }`
+                },
+                {
+                  type: 'postback',
+                  label: '先不用',
+                  data: '1'
+                }
+              ]
             }
           }
 
         ]))
       }
 
-      // more()
+      //  more()
       //       {
       //         if (write) {
       //           const out = JSON.parse(JSON.stringify(bubble))
