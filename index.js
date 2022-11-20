@@ -138,13 +138,16 @@ const broadcast = async () => {
         contents: bubbles
       }
     }
+
   ]
   )
 }
 // TMD"每天"
 scheduleJob(
-  ' 01 17 * * *', broadcast
+  ' 00 08 * * *', broadcast
 )
+// -------------毛孩顏色-------------
+
 // -------------------------------------------------------5.輸入條件搜尋--------------------------------------------------------
 
 bot.on('message', async (e) => {
@@ -152,6 +155,7 @@ bot.on('message', async (e) => {
   if (e.message.type === 'text') {
     try {
       // !讓網址就過濾的資料
+      // 中型/黑/貓/新北市
       // 1.體型 animal_bodytype /顏色 animal_colour /種類 animal_kind /地址 shelter_address
       // 2.網址轉碼 encodeURI編碼 (中文轉成UTF-8) ，decodeURI(UTF-8轉中文)
       // 3.放入搜尋
@@ -161,10 +165,12 @@ bot.on('message', async (e) => {
       console.log(searchText[2])
       console.log(searchText[3])
       const bodyType = searchText[0] === '小型' ? 'SMALL' : searchText[0] === '中型' ? 'MEDIUM' : 'BIG'
+
       // 編碼的使用例子 const encodedStr = encodeURI('這是中文字串')
       const encoded0 = encodeURI(bodyType)
       const encoded1 = encodeURI(searchText[1])
       const encoded2 = encodeURI(searchText[2])
+
       const Http = `https://data.coa.gov.tw/Service/OpenData/TransService.aspx?UnitId=QcbUEzN6E6DL&$top=3000&$skip=0$filter=animal_caption=%20%20&animal_bodytype=${encoded0}&animal_colour=${encoded1}&animal_kind=${encoded2}`
       console.log(Http)
 
@@ -190,9 +196,12 @@ bot.on('message', async (e) => {
       todayData = msg
 
       bubbles.length = 0
+      // -------------------新增過濾 純色搜尋--------------------------------------------------------
+
       // -------------------新增地址 shelter_address搜尋--------------------------------------------------------
       const write = todayData.filter(texts => {
-        return new RegExp(searchText[3]).test(texts.add)
+        return new RegExp(searchText[3]).test(texts.add) && searchText[1].length + 1 === texts.color.length
+        // new RegExp(searchText[3]).test(texts.add)
       }
       )
       // console.log(todayData) // ngrok 有
@@ -206,7 +215,7 @@ bot.on('message', async (e) => {
           {
             type: 'text',
             text: `建議更改體型或顏色再搜尋看看，
-此縣市沒有您搜尋的毛孩喔~`
+沒有您搜尋的毛孩喔~`
           })
         return
       }
@@ -250,7 +259,7 @@ bot.on('message', async (e) => {
       // console.log(searchText[2])
       // console.log(searchText[3])
       // --------------------------用write.length的長度取隨機數 >12 --------------------------------------------------
-      // const more = {
+
       if (write.length > 12) {
         // 如果write.length=13
         //  舉例1.(0.01*13)=0.13，無條件捨去 index=0
@@ -303,23 +312,12 @@ bot.on('message', async (e) => {
               contents: bubbles
             }
           },
-          // , {
-
-          //   type: 'postback',
-          //   label: '再12隻嗎?',
-          //   data: 'action=&itemid=111',
-          //   // displayText: 'Buy',
-          //   inputOption: 'openKeyboard',
-          //   fillInText: `${searchText[0] + '/' + searchText[1] + '/' + searchText[2] + '/' + (searchText[3] || '')
-          //     } `
-          // }
-
           {
             type: 'template',
-            altText: 'this is a confirm template',
+            altText: `查詢${searchText[0] + searchText[1] + searchText[2] + (searchText[3] || '')} 的毛孩`,
             template: {
               type: 'confirm',
-              text: '再12隻嗎?',
+              text: '再隨機12隻',
               actions: [
                 {
                   type: 'message',
@@ -335,11 +333,9 @@ bot.on('message', async (e) => {
               ]
             }
           }
-
         ]))
       }
-
-      //  more()
+      // ngrok http 3000 --region jp
       //       {
       //         if (write) {
       //           const out = JSON.parse(JSON.stringify(bubble))
