@@ -171,7 +171,7 @@ bot.on('message', async (e) => {
       const encoded1 = encodeURI(searchText[1])
       const encoded2 = encodeURI(searchText[2])
 
-      const Http = `https://data.coa.gov.tw/Service/OpenData/TransService.aspx?UnitId=QcbUEzN6E6DL&$top=3000&$skip=0$filter=animal_caption=%20%20&animal_bodytype=${encoded0}&animal_colour=${encoded1}&animal_kind=${encoded2}`
+      const Http = `https://data.coa.gov.tw/Service/OpenData/TransService.aspx?UnitId=QcbUEzN6E6DL&$top=3000&$skip=0&animal_bodytype=${encoded0}&animal_colour=${encoded1}&animal_kind=${encoded2}`
       console.log(Http)
 
       // {data} 直接把物件的key是data的取出來
