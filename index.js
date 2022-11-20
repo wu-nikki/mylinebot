@@ -160,10 +160,10 @@ bot.on('message', async (e) => {
       // 2.網址轉碼 encodeURI編碼 (中文轉成UTF-8) ，decodeURI(UTF-8轉中文)
       // 3.放入搜尋
       const searchText = e.message.text.split(['/'])
-      console.log(searchText[0])
-      console.log(searchText[1])
-      console.log(searchText[2])
-      console.log(searchText[3])
+      // console.log(searchText[0])
+      // console.log(searchText[1])
+      // console.log(searchText[2])
+      // console.log(searchText[3])
       const bodyType = searchText[0] === '小型' ? 'SMALL' : searchText[0] === '中型' ? 'MEDIUM' : 'BIG'
 
       // 編碼的使用例子 const encodedStr = encodeURI('這是中文字串')
@@ -172,7 +172,7 @@ bot.on('message', async (e) => {
       const encoded2 = encodeURI(searchText[2])
 
       const Http = `https://data.coa.gov.tw/Service/OpenData/TransService.aspx?UnitId=QcbUEzN6E6DL&$top=3000&$skip=0&animal_bodytype=${encoded0}&animal_colour=${encoded1}&animal_kind=${encoded2}`
-      console.log(Http)
+      // console.log(Http)
 
       // {data} 直接把物件的key是data的取出來
       const { data } = await axios.get(`${Http}`)
@@ -208,7 +208,7 @@ bot.on('message', async (e) => {
       // console.log(e.message.text)// ngrol 有
       // console.log(write) // ngrol 有
       // console.log(typeof e.message.text)// ngrol 有
-      console.log(write.length)
+      // console.log(write.length)
       // --------------------------用write.length的長度=0 --------------------------------------------------
       if (write.length === 0) {
         e.reply(
@@ -265,7 +265,7 @@ bot.on('message', async (e) => {
         //  舉例1.(0.01*13)=0.13，無條件捨去 index=0
         //  舉例2.(0.99*13)=12.9，無條件捨去 index=12
         const index = Math.floor(Math.random() * write.length)
-        console.log(index)
+        // console.log(index)
 
         for (let i = index; i < (index + 12); i++) {
           // 1. i=0 ;i<(0+12);i++ =>0,1,2,3,4,5,6,7,8,9,10,11
