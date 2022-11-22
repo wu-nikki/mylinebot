@@ -144,15 +144,65 @@ const broadcast = async () => {
 }
 // TMD"每天"
 scheduleJob(
-  ' 00 08 * * *', broadcast
+  ' 00 08 1 * *', broadcast
 )
+
 // -------------毛孩顏色-------------
 
 // -------------------------------------------------------5.輸入條件搜尋--------------------------------------------------------
 
 bot.on('message', async (e) => {
   if (e.message.type !== 'text') return
-  if (e.message.type === 'text') {
+  // ----2個字回應
+  if (e.message.text.length === 2 && e.message.type === 'text') {
+    const twoTest = async () => {
+      await init()
+      bubbles.length = 0
+      // 隨機號碼0~999 最大999
+      const r = Math.floor(Math.random() * 100)
+      for (let i = r; i < (r + 12); i++) {
+        let it = i
+        if (i > 100) {
+          it = i - 100
+        }
+        // console.log(it)
+        const animal = todayData[it]
+        const out = JSON.parse(JSON.stringify(bubble))
+        out.hero.url = animal.img || 'https://upload.wikimedia.org/wikipedia/commons/8/83/Solid_white_bordered.svg'
+
+        out.body.contents[0].text = (animal.size + animal.color + animal.variety + animal.gender + animal.kind)
+
+        out.body.contents[1].contents[0].contents[1].text = animal.place
+        out.body.contents[1].contents[1].contents[1].text = animal.add
+
+        const copyText = `---
+\n我的小名:${animal.size + animal.color + animal.variety + animal.gender + animal.kind}\n收容編號:${animal.id}
+\n收容所名稱:${animal.place}  \n收容所電話:${animal.tel} \n收容所地址:${animal.add} \n---`
+
+        out.footer.contents[0].action.fillInText = copyText
+
+        const web = `https://asms.coa.gov.tw/Amlapp/App/AnnounceList.aspx?Id=${animal.webId}&AcceptNum=${animal.id}&PageType=Adopt`
+        out.footer.contents[1].action.uri = web
+        out.hero.action.uri = web
+        bubbles.push(out)
+      }
+    }
+    console.log(e.message.text)
+    twoTest()
+    e.reply(([
+      { type: 'text', text: `${e.message.text}，我們來囉~` },
+      {
+        type: 'flex',
+        altText: '隨機12隻毛孩',
+        contents: {
+          type: 'carousel',
+          contents: bubbles
+        }
+      }
+    ]))
+    return
+  }
+  if (e.message.text.length > 2 && e.message.type === 'text') {
     try {
       // !讓網址就過濾的資料
       // 中型/黑/貓/新北市
