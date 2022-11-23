@@ -504,5 +504,5 @@ bot.listen('/', process.env.PORT || 3000, () => {
 const app = express()
 
 app.listen(4001, () => {
-  wakeUpDyno('WAKEUP-URL') // will start once server starts
+  wakeUpDyno(process.env.WAKEUP_URL) // will start once server starts
 })
