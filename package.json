@@ -22,8 +22,10 @@
     "axios": "^1.1.3",
     "cheerio": "^1.0.0-rc.12",
     "dotenv": "^16.0.3",
+    "express": "^4.18.2",
     "linebot": "^1.6.1",
     "lodash": "^4.17.21",
+    "node-fetch": "^3.3.0",
     "node-schedule": "^2.1.0",
     "schedulejob": "^1.0.1"
   },

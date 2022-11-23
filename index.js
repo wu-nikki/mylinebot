@@ -6,8 +6,9 @@ import axios from 'axios'
 // import dd from './json/test.js'
 
 import bubble from './bubble.js'
-
-import { scheduleJob } from 'node-schedule'
+import express from 'express'
+import wakeUpDyno from './wakeUpDyno.js'
+// import { scheduleJob } from 'node-schedule'
 // import animalList from './json/animalList.js'
 
 const bot = linebot({
@@ -497,4 +498,11 @@ bot.on('message', async (e) => {
 
 bot.listen('/', process.env.PORT || 3000, () => {
   console.log('機器人啟動')
+})
+
+// 自動喚醒避免heroku睡眠，我才能半夜抓剛好整天的資料 (上網找的方法)
+const app = express()
+
+app.listen(4001, () => {
+  wakeUpDyno('WAKEUP-URL') // will start once server starts
 })
