@@ -8,6 +8,7 @@ import axios from 'axios'
 import bubble from './bubble.js'
 import express from 'express'
 import wakeUpDyno from './wakeUpDyno.js'
+const app = express()
 // import { scheduleJob } from 'node-schedule'
 // import animalList from './json/animalList.js'
 
@@ -497,14 +498,18 @@ bot.on('message', async (e) => {
 // })
 
 // 自動喚醒避免heroku睡眠，我才能半夜抓剛好整天的資料 (上網找的方法)
-const app = express()
 const linebotParser = bot.parser()
 app.post('/linewebhook', linebotParser)
 // app.listen(4001, () => {
 //   wakeUpDyno(process.env.WAKEUP_URL) // will start once server starts
 // })
-app.listen('/', process.env.PORT || 3000, () => {
+app.post('/', () => {
   wakeUpDyno(process.env.WAKEUP_URL)
   console.log('機器人啟動')
 })
+app.listen()
+app.listen(process.env.PORT || 3000)
+// app.listen('/', process.env.PORT || 3000, () => {
+//   console.log('機器人啟動')
+// })
 // https://true.onrender.com/linewebhook
