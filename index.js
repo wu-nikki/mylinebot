@@ -502,7 +502,8 @@ bot.listen('/', process.env.PORT || 3000, () => {
 
 // 自動喚醒避免heroku睡眠，我才能半夜抓剛好整天的資料 (上網找的方法)
 const app = express()
-
+const linebotParser = bot.parser()
+app.post('/linewebhook', linebotParser)
 app.listen(4001, () => {
   wakeUpDyno(process.env.WAKEUP_URL) // will start once server starts
 })
