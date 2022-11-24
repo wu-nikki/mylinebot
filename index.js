@@ -109,7 +109,7 @@ init()
 //     // console.log(animal.place)
 //     // console.log(animal.add)
 //     const out = JSON.parse(JSON.stringify(bubble))
-//     out.hero.url = animal.img || 'https://upload.wikimedia.org/wikipedia/commons/8/83/Solid_white_bordered.svg'
+//     out.hero.url = animal.img || 'https://i.imgur.com/yfhkJ0F.jpg'
 
 //     out.body.contents[0].text = (animal.size + animal.color + animal.variety + animal.gender + animal.kind)
 
@@ -170,7 +170,7 @@ bot.on('message', async (e) => {
         // console.log(it)
         const animal = todayData[it]
         const out = JSON.parse(JSON.stringify(bubble))
-        out.hero.url = animal.img || 'https://upload.wikimedia.org/wikipedia/commons/8/83/Solid_white_bordered.svg'
+        out.hero.url = animal.img || 'https://i.imgur.com/yfhkJ0F.jpg'
 
         out.body.contents[0].text = (animal.size + animal.color + animal.variety + animal.gender + animal.kind)
 
@@ -275,7 +275,7 @@ bot.on('message', async (e) => {
       if (write.length <= 12) {
         for (let i = 0; i < write.length; i++) {
           const out = JSON.parse(JSON.stringify(bubble))
-          out.hero.url = write[i].img || 'https://upload.wikimedia.org/wikipedia/commons/8/83/Solid_white_bordered.svg'
+          out.hero.url = write[i].img || 'https://i.imgur.com/yfhkJ0F.jpg'
 
           out.body.contents[0].text = (write[i].size + write[i].color + write[i].variety + write[i].gender + write[i].kind)
 
@@ -332,7 +332,7 @@ bot.on('message', async (e) => {
           const num = write[it]
           // console.log(num)
           const out = JSON.parse(JSON.stringify(bubble))
-          out.hero.url = num.img || 'https://upload.wikimedia.org/wikipedia/commons/8/83/Solid_white_bordered.svg'
+          out.hero.url = num.img || 'https://i.imgur.com/yfhkJ0F.jpg'
 
           out.body.contents[0].text = (num.size + num.color + num.variety + num.gender + num.kind)
 
@@ -391,7 +391,7 @@ bot.on('message', async (e) => {
       //       {
       //         if (write) {
       //           const out = JSON.parse(JSON.stringify(bubble))
-      //           out.hero.url = write.img || 'https://upload.wikimedia.org/wikipedia/commons/8/83/Solid_white_bordered.svg'
+      //           out.hero.url = write.img || 'https://i.imgur.com/yfhkJ0F.jpg'
 
       //           out.body.contents[0].text = (write.size + write.color + write.variety + write.gender + write.kind)
 
