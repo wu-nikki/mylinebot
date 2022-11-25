@@ -9,27 +9,36 @@
  
 ![加入好友顯示11 22](https://user-images.githubusercontent.com/113516405/203764013-feb44b4c-0691-4053-8abc-94f921377afc.jpg)
 
-![加入顯示查詢範例](https://user-images.githubusercontent.com/113516405/203764078-a4ca7d15-6e9e-4017-acdd-371cab8c7772.jpg)
+![加入顯示查詢範例11 25](https://user-images.githubusercontent.com/113516405/203922023-672a1219-a491-4aed-9960-ca7c287ef190.jpg)
+
 
 2. 輸入兩個字有隨機12個毛孩的訊息回應
 
-![午安回應](https://user-images.githubusercontent.com/113516405/203764222-b4ffb030-ee7f-4986-8bd6-bd6a46b24304.jpg)
+![嗨嗨回應](https://user-images.githubusercontent.com/113516405/203922044-5130317a-3201-42d5-a84f-e3c27a967a96.jpg)
+
 
 3.可搜尋想要的體型/顏色/種類/地點 (地點可不加)~
+顯示內容有:
+是否開放認養，認養時間，是否絕育，，收容所名稱，收容所地址，關於毛孩的備註和複製毛孩資訊的按鈕
 
 (1)如沒有搜尋到會有建議更改體型或顏色的訊息
 
-![搜尋照片 1](https://user-images.githubusercontent.com/113516405/203766890-4561b718-c7f5-40d9-8209-688e761cc629.jpg)
+![搜尋照片](https://user-images.githubusercontent.com/113516405/203922071-49025ecb-532d-4957-80de-815f587b6604.jpg)
+
 
 (2)如搜尋到的毛孩低於12隻
 
-![搜尋照片](https://user-images.githubusercontent.com/113516405/203766531-1cbea24f-8984-4622-92d7-c3529d6c1ae4.jpg)
+![搜尋照片1](https://user-images.githubusercontent.com/113516405/203922086-db50865e-6387-402d-9060-0d6d0be929e7.jpg)
+
 
 (3)如搜尋到的毛孩超過12隻會有要不要'再隨機12隻的選項'~
 
-![搜尋照片1](https://user-images.githubusercontent.com/113516405/203765995-936a0d29-7c82-4303-b457-22a343a650af.jpg)
+![搜尋照片2 1](https://user-images.githubusercontent.com/113516405/203922237-afcfeecb-9584-4a1e-9a2a-8ddd563f1265.jpg)
 
-![搜尋照片2](https://user-images.githubusercontent.com/113516405/203766005-23aabdfd-a012-4c52-9c31-98bdba4c5471.jpg)
+
+![搜尋照片2](https://user-images.githubusercontent.com/113516405/203922124-ddb35f2a-bbdf-44d4-b86a-32e6c503e906.jpg)
+
+
 
 
 
