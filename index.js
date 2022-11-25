@@ -1,7 +1,7 @@
 import 'dotenv/config'
 import linebot from 'linebot'
 import axios from 'axios'
-import fs from 'fs'
+// import fs from 'fs'
 
 // import dd from './json/test.js'
 
@@ -212,10 +212,10 @@ bot.on('message', async (e) => {
       // out.footer.contents[1].action.uri = web
       // out.hero.action.uri = web
       bubbles.push(out)
-      console.log(bubbles)
+      // console.log(bubbles)
     }
-    fs.writeFileSync('test.json', JSON.stringify(bubbles))
-    // console.log(e.message.text)
+    // fs.writeFileSync('test.json', JSON.stringify(bubbles))
+    console.log(e.message.text)
     // console.log(bubble)
     e.reply([
       { type: 'text', text: `${e.message.text}，我們來囉~` },
@@ -292,7 +292,7 @@ bot.on('message', async (e) => {
       console.log(e.message.text)// ngrol 有
       // console.log(write) // ngrol 有
       // console.log(typeof e.message.text)// ngrol 有
-      console.log(write.length)
+      // console.log(write.length)
       // --------------------------用write.length的長度=0 --------------------------------------------------
       if (write.length === 0) {
         // fs.writeFileSync('test.json', JSON.stringify(bubbles))
