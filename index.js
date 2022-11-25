@@ -1,7 +1,7 @@
 import 'dotenv/config'
 import linebot from 'linebot'
 import axios from 'axios'
-// import fs from 'fs'
+import fs from 'fs'
 
 // import dd from './json/test.js'
 
@@ -39,7 +39,13 @@ const init = async () => {
     out.place = animal.animal_place
     out.add = animal.shelter_address
     out.tel = animal.shelter_tel
-    out.webId = animal.animal_id
+
+    // 11/25新增資訊
+    // out.webId = animal.animal_id
+    out.sterilization = animal.animal_sterilization === 'T' ? '已絕育' : (animal.animal_sterilization === 'F' ? '未絕育' : '未輸入')
+    out.status = animal.animal_status === 'OPEN' ? '開放認養' : animal.animal_status === 'ADOPTED' ? '已認養' : animal.animal_status === 'OTHER' ? '其他' : animal.animal_status === 'NONE' ? '未公告' : '回天堂了..'
+    out.opendate = animal.animal_opendate === '' ? '時間未定' : animal.animal_opendate
+    out.remark = animal.animal_remark === '' ? '無資料備註' : animal.animal_remark
     return out
   })
   todayData = msg
@@ -88,7 +94,13 @@ init()
 //   //   out.place = animal.animal_place
 //   //   out.add = animal.shelter_address
 //   //   out.tel = animal.shelter_tel
-//   //   out.webId = animal.animal_id
+// 11/25新增資訊
+// out.webId = animal.animal_id
+// out.sterilization = animal.animal_sterilization === 'T' ? '已絕育' : (animal.animal_sterilization === 'F' ? '未絕育' : '未輸入')
+// out.status = animal.animal_status === 'OPEN' ? '開放認養' : animal.animal_status === 'ADOPTED' ? '已認養' : animal.animal_status === 'OTHER' ? '其他' : animal.animal_status === 'NONE' ? '未公告' : '回天堂了..'
+// out.opendate = animal.animal_opendate
+// out.remark = animal.animal_remark
+//
 //   //   return out
 //   // })
 
@@ -157,41 +169,55 @@ bot.on('message', async (e) => {
   if (e.message.type !== 'text') return
   // ----2個字回應
   if (e.message.text.length === 2 && e.message.type === 'text') {
-    const twoTest = async () => {
-      await init()
-      bubbles.length = 0
-      // 隨機號碼0~999 最大999
-      const r = Math.floor(Math.random() * 100)
-      for (let i = r; i < (r + 12); i++) {
-        let it = i
-        if (i > 100) {
-          it = i - 100
-        }
-        // console.log(it)
-        const animal = todayData[it]
-        const out = JSON.parse(JSON.stringify(bubble))
-        out.hero.url = animal.img || 'https://i.imgur.com/yfhkJ0F.jpg'
-
-        out.body.contents[0].text = (animal.size + animal.color + animal.variety + animal.gender + animal.kind)
-
-        out.body.contents[1].contents[0].contents[1].text = animal.place
-        out.body.contents[1].contents[1].contents[1].text = animal.add
-
-        const copyText = `---
-\n我的小名:${animal.size + animal.color + animal.variety + animal.gender + animal.kind}\n收容編號:${animal.id}
-\n收容所名稱:${animal.place}  \n收容所電話:${animal.tel} \n收容所地址:${animal.add} \n---`
-
-        out.footer.contents[0].action.fillInText = copyText
-
-        const web = `https://asms.coa.gov.tw/Amlapp/App/AnnounceList.aspx?Id=${animal.webId}&AcceptNum=${animal.id}&PageType=Adopt`
-        out.footer.contents[1].action.uri = web
-        out.hero.action.uri = web
-        bubbles.push(out)
+    await init()
+    bubbles.length = 0
+    // 隨機號碼0~999 最大999
+    const r = Math.floor(Math.random() * 100)
+    for (let i = r; i < (r + 12); i++) {
+      let it = i
+      if (i > 100) {
+        it = i - 100
       }
+      // console.log(it)
+      const animal = todayData[it]
+      const out = JSON.parse(JSON.stringify(bubble))
+      out.hero.url = animal.img || 'https://i.imgur.com/yfhkJ0F.jpg'
+
+      out.body.contents[0].text = (animal.size + animal.color + animal.variety + animal.gender + animal.kind)
+
+      // 11/25新增資訊
+      // 開放認養時間
+      out.body.contents[1].contents[0].contents[1].text = animal.opendate
+      // 是否開放認養
+      out.body.contents[1].contents[1].contents[1].text = animal.status
+
+      // 絕育
+      out.body.contents[1].contents[2].contents[1].text = animal.sterilization
+
+      // 收容所
+      out.body.contents[1].contents[3].contents[1].text = animal.place
+      // 收容所地址
+      out.body.contents[1].contents[4].contents[1].text = animal.add
+      // 備註
+      out.body.contents[2].contents[0].contents[1].text = animal.remark
+
+      const copyText = `---
+      \n我的小名:${animal.size + animal.color + animal.variety + animal.gender + animal.kind}\n收容編號:${animal.id}\n開放認養時間:${animal.opendate}
+      \n收容所名稱:${animal.place}  \n收容所電話:${animal.tel} \n收容所地址:${animal.add} \n---`
+
+      out.footer.contents[0].action.fillInText = copyText
+
+      // 11/25等之後新網站有更新我在調整
+      // const web = `https://asms.coa.gov.tw/Amlapp/App/AnnounceList.aspx?Id=${animal.webId}&AcceptNum=${animal.id}&PageType=Adopt`
+      // out.footer.contents[1].action.uri = web
+      // out.hero.action.uri = web
+      bubbles.push(out)
+      console.log(bubbles)
     }
-    console.log(e.message.text)
-    twoTest()
-    e.reply(([
+    fs.writeFileSync('test.json', JSON.stringify(bubbles))
+    // console.log(e.message.text)
+    // console.log(bubble)
+    e.reply([
       { type: 'text', text: `${e.message.text}，我們來囉~` },
       {
         type: 'flex',
@@ -201,7 +227,8 @@ bot.on('message', async (e) => {
           contents: bubbles
         }
       }
-    ]))
+    ])
+
     return
   }
   if (e.message.text.length > 2 && e.message.type === 'text') {
@@ -241,7 +268,12 @@ bot.on('message', async (e) => {
         out.place = animal.animal_place
         out.add = animal.shelter_address
         out.tel = animal.shelter_tel
-        out.webId = animal.animal_id
+        // 11/25新增資訊
+        // out.webId = animal.animal_id
+        out.sterilization = animal.animal_sterilization === 'T' ? '已絕育' : (animal.animal_sterilization === 'F' ? '未絕育' : '未輸入')
+        out.status = animal.animal_status === 'OPEN' ? '開放認養' : animal.animal_status === 'ADOPTED' ? '已認養' : animal.animal_status === 'OTHER' ? '其他' : animal.animal_status === 'NONE' ? '未公告' : '回天堂了..'
+        out.opendate = animal.animal_opendate === '' ? '時間未定' : animal.animal_opendate
+        out.remark = animal.animal_remark === '' ? '無資料備註' : animal.animal_remark
         return out
       })
       // 將包含過濾過資料的物件更新進todayData
@@ -257,12 +289,13 @@ bot.on('message', async (e) => {
       }
       )
       // console.log(todayData) // ngrok 有
-      // console.log(e.message.text)// ngrol 有
+      console.log(e.message.text)// ngrol 有
       // console.log(write) // ngrol 有
       // console.log(typeof e.message.text)// ngrol 有
-      // console.log(write.length)
+      console.log(write.length)
       // --------------------------用write.length的長度=0 --------------------------------------------------
       if (write.length === 0) {
+        // fs.writeFileSync('test.json', JSON.stringify(bubbles))
         e.reply(
           {
             type: 'text',
@@ -278,26 +311,40 @@ bot.on('message', async (e) => {
           out.hero.url = write[i].img || 'https://i.imgur.com/yfhkJ0F.jpg'
 
           out.body.contents[0].text = (write[i].size + write[i].color + write[i].variety + write[i].gender + write[i].kind)
+          // 11/25新增資訊
+          // 開放認養時間
+          out.body.contents[1].contents[0].contents[1].text = write[i].opendate
+          // 是否開放認養
+          out.body.contents[1].contents[1].contents[1].text = write[i].status
 
-          out.body.contents[1].contents[0].contents[1].text = write[i].place
-          out.body.contents[1].contents[1].contents[1].text = write[i].add
+          // 絕育
+          out.body.contents[1].contents[2].contents[1].text = write[i].sterilization
+
+          // 收容所
+          out.body.contents[1].contents[3].contents[1].text = write[i].place
+          // 收容所地址
+          out.body.contents[1].contents[4].contents[1].text = write[i].add
+          // 備註
+          out.body.contents[2].contents[0].contents[1].text = write[i].remark
 
           const copyText = `---
-\n我的小名:${write[i].size + write[i].color + write[i].variety + write[i].gender + write[i].kind}\n收容編號:${write[i].id}
-\n收容所名稱:${write[i].place}  \n收容所電話:${write[i].tel} \n收容所地址:${write[i].add} \n---`
+      \n我的小名:${write[i].size + write[i].color + write[i].variety + write[i].gender + write[i].kind}\n收容編號:${write[i].id}\n開放認養時間:${write[i].opendate}
+      \n收容所名稱:${write[i].place}  \n收容所電話:${write[i].tel} \n收容所地址:${write[i].add} \n---`
 
           out.footer.contents[0].action.fillInText = copyText
-
-          const web = `https://asms.coa.gov.tw/Amlapp/App/AnnounceList.aspx?Id=${write[i].webId}&AcceptNum=${write[i].id}&PageType=Adopt`
-          out.footer.contents[1].action.uri = web
-          out.hero.action.uri = web
-          // console.log(out)
+          // 11/25等之後新網站有更新我在調整
+          // const web = `https://asms.coa.gov.tw/Amlapp/App/AnnounceList.aspx?Id=${write[i].webId}&AcceptNum=${write[i].id}&PageType=Adopt`
+          // out.footer.contents[1].action.uri = web
+          // out.hero.action.uri = web
           bubbles.push(out)
+          // fs.writeFileSync('test.json', JSON.stringify(bubbles))
+          // console.log(bubbles)
+          // console.log(write.length)
         } e.reply(([
           { type: 'text', text: `搜尋到${write.length}隻毛孩喔~` },
           {
             type: 'flex',
-            altText: `查詢${searchText[0] + searchText[1] + searchText[2] + (searchText[3] || '')}的毛孩`,
+            altText: `查詢${searchText[0] + searchText[1] + searchText[2] + (searchText[3] || '')} 的毛孩`,
             contents: {
               type: 'carousel',
               contents: bubbles
@@ -336,20 +383,35 @@ bot.on('message', async (e) => {
 
           out.body.contents[0].text = (num.size + num.color + num.variety + num.gender + num.kind)
 
-          out.body.contents[1].contents[0].contents[1].text = num.place
-          out.body.contents[1].contents[1].contents[1].text = num.add
+          // 11/25新增資訊
+          // 開放認養時間
+          out.body.contents[1].contents[0].contents[1].text = num.opendate
+          // 是否開放認養
+          out.body.contents[1].contents[1].contents[1].text = num.status
+
+          // 絕育
+          out.body.contents[1].contents[2].contents[1].text = num.sterilization
+
+          // 收容所
+          out.body.contents[1].contents[3].contents[1].text = num.place
+          // 收容所地址
+          out.body.contents[1].contents[4].contents[1].text = num.add
+          // 備註
+          out.body.contents[2].contents[0].contents[1].text = num.remark
 
           const copyText = `---
-\n我的小名:${num.size + num.color + num.variety + num.gender + num.kind}\n收容編號:${num.id}
-\n收容所名稱:${num.place}  \n收容所電話:${num.tel} \n收容所地址:${num.add} \n---`
+      \n我的小名:${num.size + num.color + num.variety + num.gender + num.kind}\n收容編號:${num.id}\n開放認養時間:${num.opendate}
+      \n收容所名稱:${num.place}  \n收容所電話:${num.tel} \n收容所地址:${num.add} \n---`
 
           out.footer.contents[0].action.fillInText = copyText
 
-          const web = `https://asms.coa.gov.tw/Amlapp/App/AnnounceList.aspx?Id=${num.webId}&AcceptNum=${num.id}&PageType=Adopt`
-          out.footer.contents[1].action.uri = web
-          out.hero.action.uri = web
-          // console.log(out)
+          // 11/25等之後新網站有更新我在調整
+          // const web = `https://asms.coa.gov.tw/Amlapp/App/AnnounceList.aspx?Id=${num.webId}&AcceptNum=${num.id}&PageType=Adopt`
+          // out.footer.contents[1].action.uri = web
+          // out.hero.action.uri = web
           bubbles.push(out)
+          // console.log(write.length)
+          // console.log(bubbles)
         } e.reply(([
           {
             type: 'text', text: `搜尋到${write.length}隻毛孩喔~
@@ -426,7 +488,7 @@ bot.on('message', async (e) => {
       //       }
     } catch (error) {
       console.log(error)
-      e.reply('輸入條件有誤~')
+      e.reply('可能系統在更新請稍晚再試~')
     }
   }
 })
@@ -513,3 +575,16 @@ app.listen(process.env.PORT || 3000)
 //   console.log('機器人啟動')
 // })
 // https://true.onrender.com/linewebhook
+
+// ,
+// {
+//   type: 'button',
+//   style: 'link',
+//   height: 'sm',
+//   action: {
+//     type: 'uri',
+//     label: '我的網站',
+//     uri: ''
+//   }
+// }
+// https://asms.coa.gov.tw/Amlapp/App/AnnounceList.aspx?Id=282171&AcceptNum=1111103C10&PageType=Adopt

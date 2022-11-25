@@ -1,0 +1,750 @@
+[
+  {
+    "type": "bubble",
+    "header": {
+      "type": "box",
+      "layout": "vertical",
+      "contents": []
+    },
+    "hero": {
+      "type": "image",
+      "url": "https://asms.coa.gov.tw/amlapp/upload/pic/fdbb6917-f528-4270-800a-e3da976821f7_org.jpg",
+      "size": "full",
+      "aspectRatio": "18:11",
+      "aspectMode": "fit"
+    },
+    "body": {
+      "type": "box",
+      "layout": "vertical",
+      "contents": [
+        {
+          "type": "text",
+          "text": "小型白色貴賓母犬",
+          "weight": "bold",
+          "size": "xl"
+        },
+        {
+          "type": "box",
+          "layout": "vertical",
+          "contents": [
+            {
+              "type": "box",
+              "layout": "baseline",
+              "contents": [
+                {
+                  "type": "text",
+                  "text": "開放認養時間:",
+                  "size": "sm",
+                  "flex": 0,
+                  "color": "#888888"
+                },
+                {
+                  "type": "text",
+                  "text": "2022-11-12",
+                  "size": "md",
+                  "margin": "xxl",
+                  "wrap": true
+                }
+              ]
+            },
+            {
+              "type": "box",
+              "layout": "horizontal",
+              "contents": [
+                {
+                  "type": "text",
+                  "text": "認養狀態:",
+                  "size": "sm",
+                  "flex": 0,
+                  "color": "#888888"
+                },
+                {
+                  "type": "text",
+                  "text": "開放認養",
+                  "margin": "lg",
+                  "size": "md",
+                  "align": "center"
+                }
+              ]
+            },
+            {
+              "type": "box",
+              "layout": "baseline",
+              "contents": [
+                {
+                  "type": "text",
+                  "text": "是否絕育:",
+                  "size": "sm",
+                  "flex": 0,
+                  "color": "#888888"
+                },
+                {
+                  "type": "text",
+                  "text": "已絕育",
+                  "margin": "lg",
+                  "align": "center"
+                }
+              ]
+            },
+            {
+              "type": "box",
+              "layout": "baseline",
+              "contents": [
+                {
+                  "type": "text",
+                  "text": "我在:",
+                  "size": "sm",
+                  "flex": 0,
+                  "color": "#888888"
+                },
+                {
+                  "type": "text",
+                  "size": "xs",
+                  "text": "新北市中和區公立動物之家",
+                  "offsetStart": "none",
+                  "offsetEnd": "none",
+                  "align": "center"
+                }
+              ],
+              "margin": "sm"
+            },
+            {
+              "type": "box",
+              "layout": "baseline",
+              "contents": [
+                {
+                  "type": "text",
+                  "text": "地址:",
+                  "size": "sm",
+                  "flex": 0,
+                  "color": "#888888"
+                },
+                {
+                  "type": "text",
+                  "size": "xs",
+                  "text": "新北市中和區興南路三段100號",
+                  "offsetStart": "none",
+                  "offsetEnd": "none",
+                  "align": "center"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "box",
+          "layout": "vertical",
+          "margin": "xs",
+          "spacing": "sm",
+          "contents": [
+            {
+              "type": "box",
+              "layout": "vertical",
+              "contents": [
+                {
+                  "type": "separator",
+                  "margin": "lg",
+                  "color": "#FF7F50"
+                },
+                {
+                  "type": "text",
+                  "text": "無資料備註",
+                  "wrap": true,
+                  "size": "sm",
+                  "margin": "sm"
+                },
+                {
+                  "type": "separator",
+                  "margin": "sm",
+                  "color": "#FF7F50"
+                }
+              ],
+              "margin": "none"
+            }
+          ]
+        }
+      ]
+    },
+    "footer": {
+      "type": "box",
+      "layout": "vertical",
+      "spacing": "sm",
+      "contents": [
+        {
+          "type": "button",
+          "style": "link",
+          "height": "sm",
+          "action": {
+            "type": "postback",
+            "label": "複製我的資訊",
+            "data": "hello",
+            "inputOption": "openKeyboard",
+            "fillInText": "---\n      \n我的小名:小型白色貴賓母犬\n收容編號:AAAEG1111105006\n開放認養時間:2022-11-12\n      \n收容所名稱:新北市中和區公立動物之家  \n收容所電話:02-86685547 \n收容所地址:新北市中和區興南路三段100號 \n---"
+          }
+        }
+      ],
+      "flex": 0
+    }
+  },
+  {
+    "type": "bubble",
+    "header": {
+      "type": "box",
+      "layout": "vertical",
+      "contents": []
+    },
+    "hero": {
+      "type": "image",
+      "url": "https://asms.coa.gov.tw/amlapp/upload/pic/1fa70773-cce0-4166-be25-0ec4149185e0_org.jpg",
+      "size": "full",
+      "aspectRatio": "18:11",
+      "aspectMode": "fit"
+    },
+    "body": {
+      "type": "box",
+      "layout": "vertical",
+      "contents": [
+        {
+          "type": "text",
+          "text": "小型白色馬爾濟斯公犬",
+          "weight": "bold",
+          "size": "xl"
+        },
+        {
+          "type": "box",
+          "layout": "vertical",
+          "contents": [
+            {
+              "type": "box",
+              "layout": "baseline",
+              "contents": [
+                {
+                  "type": "text",
+                  "text": "開放認養時間:",
+                  "size": "sm",
+                  "flex": 0,
+                  "color": "#888888"
+                },
+                {
+                  "type": "text",
+                  "text": "2022-11-14",
+                  "size": "md",
+                  "margin": "xxl",
+                  "wrap": true
+                }
+              ]
+            },
+            {
+              "type": "box",
+              "layout": "horizontal",
+              "contents": [
+                {
+                  "type": "text",
+                  "text": "認養狀態:",
+                  "size": "sm",
+                  "flex": 0,
+                  "color": "#888888"
+                },
+                {
+                  "type": "text",
+                  "text": "開放認養",
+                  "margin": "lg",
+                  "size": "md",
+                  "align": "center"
+                }
+              ]
+            },
+            {
+              "type": "box",
+              "layout": "baseline",
+              "contents": [
+                {
+                  "type": "text",
+                  "text": "是否絕育:",
+                  "size": "sm",
+                  "flex": 0,
+                  "color": "#888888"
+                },
+                {
+                  "type": "text",
+                  "text": "已絕育",
+                  "margin": "lg",
+                  "align": "center"
+                }
+              ]
+            },
+            {
+              "type": "box",
+              "layout": "baseline",
+              "contents": [
+                {
+                  "type": "text",
+                  "text": "我在:",
+                  "size": "sm",
+                  "flex": 0,
+                  "color": "#888888"
+                },
+                {
+                  "type": "text",
+                  "size": "xs",
+                  "text": "新北市五股區公立動物之家",
+                  "offsetStart": "none",
+                  "offsetEnd": "none",
+                  "align": "center"
+                }
+              ],
+              "margin": "sm"
+            },
+            {
+              "type": "box",
+              "layout": "baseline",
+              "contents": [
+                {
+                  "type": "text",
+                  "text": "地址:",
+                  "size": "sm",
+                  "flex": 0,
+                  "color": "#888888"
+                },
+                {
+                  "type": "text",
+                  "size": "xs",
+                  "text": "新北市五股區外寮路9-9號",
+                  "offsetStart": "none",
+                  "offsetEnd": "none",
+                  "align": "center"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "box",
+          "layout": "vertical",
+          "margin": "xs",
+          "spacing": "sm",
+          "contents": [
+            {
+              "type": "box",
+              "layout": "vertical",
+              "contents": [
+                {
+                  "type": "separator",
+                  "margin": "lg",
+                  "color": "#FF7F50"
+                },
+                {
+                  "type": "text",
+                  "text": "無資料備註",
+                  "wrap": true,
+                  "size": "sm",
+                  "margin": "sm"
+                },
+                {
+                  "type": "separator",
+                  "margin": "sm",
+                  "color": "#FF7F50"
+                }
+              ],
+              "margin": "none"
+            }
+          ]
+        }
+      ]
+    },
+    "footer": {
+      "type": "box",
+      "layout": "vertical",
+      "spacing": "sm",
+      "contents": [
+        {
+          "type": "button",
+          "style": "link",
+          "height": "sm",
+          "action": {
+            "type": "postback",
+            "label": "複製我的資訊",
+            "data": "hello",
+            "inputOption": "openKeyboard",
+            "fillInText": "---\n      \n我的小名:小型白色馬爾濟斯公犬\n收容編號:AAAHG1110812001\n開放認養時間:2022-11-14\n      \n收容所名稱:新北市五股區公立動物之家  \n收容所電話:02-82925265 \n收容所地址:新北市五股區外寮路9-9號 \n---"
+          }
+        }
+      ],
+      "flex": 0
+    }
+  },
+  {
+    "type": "bubble",
+    "header": {
+      "type": "box",
+      "layout": "vertical",
+      "contents": []
+    },
+    "hero": {
+      "type": "image",
+      "url": "https://i.imgur.com/yfhkJ0F.jpg",
+      "size": "full",
+      "aspectRatio": "18:11",
+      "aspectMode": "fit"
+    },
+    "body": {
+      "type": "box",
+      "layout": "vertical",
+      "contents": [
+        {
+          "type": "text",
+          "text": "小型白色馬爾濟斯母犬",
+          "weight": "bold",
+          "size": "xl"
+        },
+        {
+          "type": "box",
+          "layout": "vertical",
+          "contents": [
+            {
+              "type": "box",
+              "layout": "baseline",
+              "contents": [
+                {
+                  "type": "text",
+                  "text": "開放認養時間:",
+                  "size": "sm",
+                  "flex": 0,
+                  "color": "#888888"
+                },
+                {
+                  "type": "text",
+                  "text": "",
+                  "size": "md",
+                  "margin": "xxl",
+                  "wrap": true
+                }
+              ]
+            },
+            {
+              "type": "box",
+              "layout": "horizontal",
+              "contents": [
+                {
+                  "type": "text",
+                  "text": "認養狀態:",
+                  "size": "sm",
+                  "flex": 0,
+                  "color": "#888888"
+                },
+                {
+                  "type": "text",
+                  "text": "開放認養",
+                  "margin": "lg",
+                  "size": "md",
+                  "align": "center"
+                }
+              ]
+            },
+            {
+              "type": "box",
+              "layout": "baseline",
+              "contents": [
+                {
+                  "type": "text",
+                  "text": "是否絕育:",
+                  "size": "sm",
+                  "flex": 0,
+                  "color": "#888888"
+                },
+                {
+                  "type": "text",
+                  "text": "未絕育",
+                  "margin": "lg",
+                  "align": "center"
+                }
+              ]
+            },
+            {
+              "type": "box",
+              "layout": "baseline",
+              "contents": [
+                {
+                  "type": "text",
+                  "text": "我在:",
+                  "size": "sm",
+                  "flex": 0,
+                  "color": "#888888"
+                },
+                {
+                  "type": "text",
+                  "size": "xs",
+                  "text": "新北市板橋區公立動物之家",
+                  "offsetStart": "none",
+                  "offsetEnd": "none",
+                  "align": "center"
+                }
+              ],
+              "margin": "sm"
+            },
+            {
+              "type": "box",
+              "layout": "baseline",
+              "contents": [
+                {
+                  "type": "text",
+                  "text": "地址:",
+                  "size": "sm",
+                  "flex": 0,
+                  "color": "#888888"
+                },
+                {
+                  "type": "text",
+                  "size": "xs",
+                  "text": "新北市板橋區板城路28-1號",
+                  "offsetStart": "none",
+                  "offsetEnd": "none",
+                  "align": "center"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "box",
+          "layout": "vertical",
+          "margin": "xs",
+          "spacing": "sm",
+          "contents": [
+            {
+              "type": "box",
+              "layout": "vertical",
+              "contents": [
+                {
+                  "type": "separator",
+                  "margin": "lg",
+                  "color": "#FF7F50"
+                },
+                {
+                  "type": "text",
+                  "text": "無資料備註",
+                  "wrap": true,
+                  "size": "sm",
+                  "margin": "sm"
+                },
+                {
+                  "type": "separator",
+                  "margin": "sm",
+                  "color": "#FF7F50"
+                }
+              ],
+              "margin": "none"
+            }
+          ]
+        }
+      ]
+    },
+    "footer": {
+      "type": "box",
+      "layout": "vertical",
+      "spacing": "sm",
+      "contents": [
+        {
+          "type": "button",
+          "style": "link",
+          "height": "sm",
+          "action": {
+            "type": "postback",
+            "label": "複製我的資訊",
+            "data": "hello",
+            "inputOption": "openKeyboard",
+            "fillInText": "---\n      \n我的小名:小型白色馬爾濟斯母犬\n收容編號:AAADG2022061409\n開放認養時間:\n      \n收容所名稱:新北市板橋區公立動物之家  \n收容所電話:02-89662158 \n收容所地址:新北市板橋區板城路28-1號 \n---"
+          }
+        }
+      ],
+      "flex": 0
+    }
+  },
+  {
+    "type": "bubble",
+    "header": {
+      "type": "box",
+      "layout": "vertical",
+      "contents": []
+    },
+    "hero": {
+      "type": "image",
+      "url": "https://i.imgur.com/yfhkJ0F.jpg",
+      "size": "full",
+      "aspectRatio": "18:11",
+      "aspectMode": "fit"
+    },
+    "body": {
+      "type": "box",
+      "layout": "vertical",
+      "contents": [
+        {
+          "type": "text",
+          "text": "小型白色法國鬥牛犬公犬",
+          "weight": "bold",
+          "size": "xl"
+        },
+        {
+          "type": "box",
+          "layout": "vertical",
+          "contents": [
+            {
+              "type": "box",
+              "layout": "baseline",
+              "contents": [
+                {
+                  "type": "text",
+                  "text": "開放認養時間:",
+                  "size": "sm",
+                  "flex": 0,
+                  "color": "#888888"
+                },
+                {
+                  "type": "text",
+                  "text": "",
+                  "size": "md",
+                  "margin": "xxl",
+                  "wrap": true
+                }
+              ]
+            },
+            {
+              "type": "box",
+              "layout": "horizontal",
+              "contents": [
+                {
+                  "type": "text",
+                  "text": "認養狀態:",
+                  "size": "sm",
+                  "flex": 0,
+                  "color": "#888888"
+                },
+                {
+                  "type": "text",
+                  "text": "開放認養",
+                  "margin": "lg",
+                  "size": "md",
+                  "align": "center"
+                }
+              ]
+            },
+            {
+              "type": "box",
+              "layout": "baseline",
+              "contents": [
+                {
+                  "type": "text",
+                  "text": "是否絕育:",
+                  "size": "sm",
+                  "flex": 0,
+                  "color": "#888888"
+                },
+                {
+                  "type": "text",
+                  "text": "未絕育",
+                  "margin": "lg",
+                  "align": "center"
+                }
+              ]
+            },
+            {
+              "type": "box",
+              "layout": "baseline",
+              "contents": [
+                {
+                  "type": "text",
+                  "text": "我在:",
+                  "size": "sm",
+                  "flex": 0,
+                  "color": "#888888"
+                },
+                {
+                  "type": "text",
+                  "size": "xs",
+                  "text": "新北市政府動物保護防疫處",
+                  "offsetStart": "none",
+                  "offsetEnd": "none",
+                  "align": "center"
+                }
+              ],
+              "margin": "sm"
+            },
+            {
+              "type": "box",
+              "layout": "baseline",
+              "contents": [
+                {
+                  "type": "text",
+                  "text": "地址:",
+                  "size": "sm",
+                  "flex": 0,
+                  "color": "#888888"
+                },
+                {
+                  "type": "text",
+                  "size": "xs",
+                  "text": "新北市板橋區四川路一段157巷2號",
+                  "offsetStart": "none",
+                  "offsetEnd": "none",
+                  "align": "center"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "box",
+          "layout": "vertical",
+          "margin": "xs",
+          "spacing": "sm",
+          "contents": [
+            {
+              "type": "box",
+              "layout": "vertical",
+              "contents": [
+                {
+                  "type": "separator",
+                  "margin": "lg",
+                  "color": "#FF7F50"
+                },
+                {
+                  "type": "text",
+                  "text": "無資料備註",
+                  "wrap": true,
+                  "size": "sm",
+                  "margin": "sm"
+                },
+                {
+                  "type": "separator",
+                  "margin": "sm",
+                  "color": "#FF7F50"
+                }
+              ],
+              "margin": "none"
+            }
+          ]
+        }
+      ]
+    },
+    "footer": {
+      "type": "box",
+      "layout": "vertical",
+      "spacing": "sm",
+      "contents": [
+        {
+          "type": "button",
+          "style": "link",
+          "height": "sm",
+          "action": {
+            "type": "postback",
+            "label": "複製我的資訊",
+            "data": "hello",
+            "inputOption": "openKeyboard",
+            "fillInText": "---\n      \n我的小名:小型白色法國鬥牛犬公犬\n收容編號:AAAAG1110610001\n開放認養時間:\n      \n收容所名稱:新北市政府動物保護防疫處  \n收容所電話:02-29596353 \n收容所地址:新北市板橋區四川路一段157巷2號 \n---"
+          }
+        }
+      ],
+      "flex": 0
+    }
+  }
+]
