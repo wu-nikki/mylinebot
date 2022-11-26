@@ -24,32 +24,36 @@ const bubbles = []
 let todayData
 
 const init = async () => {
-  // {data} 直接把物件的key是data的取出來
-  const { data } = await axios.get('https://data.coa.gov.tw/Service/OpenData/TransService.aspx?UnitId=QcbUEzN6E6DL&$top=1000&$skip=0')
-  const msg = data.map(animal => {
-    const out = {}
-    out.img = animal.album_file
-    out.size = animal.animal_bodytype === 'SMALL' ? '小型' : (animal.animal_bodytype === 'MEDIUM' ? '中型' : '大型')
-    out.color = animal.animal_colour
-    out.variety = (animal.animal_Variety === '混種貓' || (animal.animal_Variety === '混種狗')) ? '米克斯' : animal.animal_Variety
-    out.gender = animal.animal_sex === 'M' ? '公' : (animal.animal_sex === 'F' ? '母' : '未輸入')
-    out.kind = animal.animal_kind === '狗' ? '犬' : (animal.animal_kind === '貓' ? '貓' : '其他')
-    // 此id為收容編號
-    out.id = animal.animal_subid
-    out.place = animal.animal_place
-    out.add = animal.shelter_address
-    out.tel = animal.shelter_tel
+  try {
+    // {data} 直接把物件的key是data的取出來
+    const { data } = await axios.get('https://data.coa.gov.tw/Service/OpenData/TransService.aspx?UnitId=QcbUEzN6E6DL&$top=1000&$skip=0')
+    const msg = data.map(animal => {
+      const out = {}
+      out.img = animal.album_file
+      out.size = animal.animal_bodytype === 'SMALL' ? '小型' : (animal.animal_bodytype === 'MEDIUM' ? '中型' : '大型')
+      out.color = animal.animal_colour
+      out.variety = (animal.animal_Variety === '混種貓' || (animal.animal_Variety === '混種狗')) ? '米克斯' : animal.animal_Variety
+      out.gender = animal.animal_sex === 'M' ? '公' : (animal.animal_sex === 'F' ? '母' : '未輸入')
+      out.kind = animal.animal_kind === '狗' ? '犬' : (animal.animal_kind === '貓' ? '貓' : '其他')
+      // 此id為收容編號
+      out.id = animal.animal_subid
+      out.place = animal.animal_place
+      out.add = animal.shelter_address
+      out.tel = animal.shelter_tel
 
-    // 11/25新增資訊
-    // out.webId = animal.animal_id
-    out.sterilization = animal.animal_sterilization === 'T' ? '已絕育' : (animal.animal_sterilization === 'F' ? '未絕育' : '未輸入')
-    out.status = animal.animal_status === 'OPEN' ? '開放認養' : animal.animal_status === 'ADOPTED' ? '已認養' : animal.animal_status === 'OTHER' ? '其他' : animal.animal_status === 'NONE' ? '未公告' : '回天堂了..'
-    out.opendate = animal.animal_opendate === '' ? '時間未定' : animal.animal_opendate
-    out.remark = animal.animal_remark === '' ? '無資料備註' : animal.animal_remark
-    return out
-  })
-  todayData = msg
-  console.log('init OK' + todayData.length)
+      // 11/25新增資訊
+      // out.webId = animal.animal_id
+      out.sterilization = animal.animal_sterilization === 'T' ? '已絕育' : (animal.animal_sterilization === 'F' ? '未絕育' : '未輸入')
+      out.status = animal.animal_status === 'OPEN' ? '開放認養' : animal.animal_status === 'ADOPTED' ? '已認養' : animal.animal_status === 'OTHER' ? '其他' : animal.animal_status === 'NONE' ? '未公告' : '回天堂了..'
+      out.opendate = animal.animal_opendate === '' ? '時間未定' : animal.animal_opendate
+      out.remark = animal.animal_remark === '' ? '無資料備註' : animal.animal_remark
+      return out
+    })
+    todayData = msg
+    console.log('init OK' + todayData.length)
+  } catch (error) {
+    return Error(error)
+  }
 }
 init()
 
@@ -168,71 +172,71 @@ init()
 bot.on('message', async (e) => {
   if (e.message.type !== 'text') return
   // ----2個字回應
-  if (e.message.text.length === 2 && e.message.type === 'text') {
-    await init()
-    bubbles.length = 0
-    // 隨機號碼0~999 最大999
-    const r = Math.floor(Math.random() * 100)
-    for (let i = r; i < (r + 12); i++) {
-      let it = i
-      if (i > 100) {
-        it = i - 100
-      }
-      // console.log(it)
-      const animal = todayData[it]
-      const out = JSON.parse(JSON.stringify(bubble))
-      out.hero.url = animal.img || 'https://i.imgur.com/yfhkJ0F.jpg'
+  try {
+    if (e.message.text.length === 2 && e.message.type === 'text') {
+      await init()
+      bubbles.length = 0
+      // 隨機號碼0~999 最大999
+      const r = Math.floor(Math.random() * 100)
+      for (let i = r; i < (r + 12); i++) {
+        let it = i
+        if (i > 100) {
+          it = i - 100
+        }
+        // console.log(it)
+        const animal = todayData[it]
+        const out = JSON.parse(JSON.stringify(bubble))
+        out.hero.url = animal.img || 'https://i.imgur.com/yfhkJ0F.jpg'
 
-      out.body.contents[0].text = (animal.size + animal.color + animal.variety + animal.gender + animal.kind)
+        out.body.contents[0].text = (animal.size + animal.color + animal.variety + animal.gender + animal.kind)
 
-      // 11/25新增資訊
-      // 開放認養時間
-      out.body.contents[1].contents[0].contents[1].text = animal.opendate
-      // 是否開放認養
-      out.body.contents[1].contents[1].contents[1].text = animal.status
+        // 11/25新增資訊
+        // 開放認養時間
+        out.body.contents[1].contents[0].contents[1].text = animal.opendate
+        // 是否開放認養
+        out.body.contents[1].contents[1].contents[1].text = animal.status
 
-      // 絕育
-      out.body.contents[1].contents[2].contents[1].text = animal.sterilization
+        // 絕育
+        out.body.contents[1].contents[2].contents[1].text = animal.sterilization
 
-      // 收容所
-      out.body.contents[1].contents[3].contents[1].text = animal.place
-      // 收容所地址
-      out.body.contents[1].contents[4].contents[1].text = animal.add
-      // 備註
-      out.body.contents[2].contents[0].contents[1].text = animal.remark
+        // 收容所
+        out.body.contents[1].contents[3].contents[1].text = animal.place
+        // 收容所地址
+        out.body.contents[1].contents[4].contents[1].text = animal.add
+        // 備註
+        out.body.contents[2].contents[0].contents[1].text = animal.remark
 
-      const copyText = `---
+        const copyText = `---
       \n我的小名:${animal.size + animal.color + animal.variety + animal.gender + animal.kind}\n收容編號:${animal.id}\n開放認養時間:${animal.opendate}
       \n收容所名稱:${animal.place}  \n收容所電話:${animal.tel} \n收容所地址:${animal.add} \n---`
 
-      out.footer.contents[0].action.fillInText = copyText
+        out.footer.contents[0].action.fillInText = copyText
 
-      // 11/25等之後新網站有更新我在調整
-      // const web = `https://asms.coa.gov.tw/Amlapp/App/AnnounceList.aspx?Id=${animal.webId}&AcceptNum=${animal.id}&PageType=Adopt`
-      // out.footer.contents[1].action.uri = web
-      // out.hero.action.uri = web
-      bubbles.push(out)
-      // console.log(bubbles)
-    }
-    // fs.writeFileSync('test.json', JSON.stringify(bubbles))
-    console.log(e.message.text)
-    // console.log(bubble)
-    e.reply([
-      { type: 'text', text: `${e.message.text}，我們來囉~` },
-      {
-        type: 'flex',
-        altText: '隨機12隻毛孩',
-        contents: {
-          type: 'carousel',
-          contents: bubbles
-        }
+        // 11/25等之後新網站有更新我在調整
+        // const web = `https://asms.coa.gov.tw/Amlapp/App/AnnounceList.aspx?Id=${animal.webId}&AcceptNum=${animal.id}&PageType=Adopt`
+        // out.footer.contents[1].action.uri = web
+        // out.hero.action.uri = web
+        bubbles.push(out)
+        // console.log(bubbles)
       }
-    ])
+      // fs.writeFileSync('test.json', JSON.stringify(bubbles))
+      console.log(e.message.text)
+      // console.log(bubble)
+      e.reply([
+        { type: 'text', text: `${e.message.text}，我們來囉~` },
+        {
+          type: 'flex',
+          altText: '隨機12隻毛孩',
+          contents: {
+            type: 'carousel',
+            contents: bubbles
+          }
+        }
+      ])
 
-    return
-  }
-  if (e.message.text.length > 2 && e.message.type === 'text') {
-    try {
+      return
+    }
+    if (e.message.text.length > 2 && e.message.type === 'text') {
       // !讓網址就過濾的資料
       // 中型/黑/貓/新北市
       // 1.體型 animal_bodytype /顏色 animal_colour /種類 animal_kind /地址 shelter_address
@@ -486,10 +490,10 @@ bot.on('message', async (e) => {
       //           e.reply('毛孩可能被領養囉~請找別隻喔~')
       //         }
       //       }
-    } catch (error) {
-      console.log(error)
-      e.reply('可能系統在更新請稍晚再試~')
     }
+  } catch (error) {
+    console.log(error)
+    e.reply('政府開放資料在更新請稍晚再試~')
   }
 })
 
