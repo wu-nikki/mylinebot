@@ -44,13 +44,13 @@ let todayData
 const init = async () => {
   try {
     // {data} 直接把物件的key是data的取出來
-    const { data } = await axios.get('https://data.coa.gov.tw/Service/OpenData/TransService.aspx?UnitId=QcbUEzN6E6DL&$top=1000&$skip=0')
+    const { data } = await axios.get('https://data.coa.gov.tw/Service/OpenData/TransService.aspx?UnitId=QcbUEzN6E6DL&$top=2000&$skip=0')
     const msg = data.map(animal => {
       const out = {}
       out.img = animal.album_file
       out.size = animal.animal_bodytype === 'SMALL' ? '小型' : (animal.animal_bodytype === 'MEDIUM' ? '中型' : '大型')
       out.color = animal.animal_colour
-      out.variety = (animal.animal_Variety.includes('混種貓') || (animal.animal_Variety.includes('混種犬'))) ? '米克斯' : animal.animal_Variety.trim()
+      out.variety = (animal.animal_Variety.includes('混種貓') || (animal.animal_Variety.includes('混種犬')) || (animal.animal_Variety.includes('混種狗'))) ? '米克斯' : animal.animal_Variety.trim()
       out.gender = animal.animal_sex === 'M' ? '公' : (animal.animal_sex === 'F' ? '母' : '未輸入')
       out.kind = animal.animal_kind === '狗' ? '犬' : (animal.animal_kind === '貓' ? '貓' : '其他')
       // 此id為收容編號
@@ -222,7 +222,9 @@ bot.on('message', async (e) => {
         // 收容所地址
         out.body.contents[1].contents[4].contents[1].text = animal.add
         // 備註
-        out.body.contents[2].contents[0].contents[1].text = animal.remark
+        out.body.contents[2].contents[0].contents[1].text = (`收容編號:${animal.id}
+        ${animal.remark}
+        `)
 
         const copyText = `---
       \n我的小名:${animal.size + animal.color + animal.variety + animal.gender + animal.kind}\n收容編號:${animal.id}\n開放認養時間:${animal.opendate}
@@ -282,7 +284,7 @@ bot.on('message', async (e) => {
         out.img = animal.album_file
         out.size = animal.animal_bodytype === 'SMALL' ? '小型' : (animal.animal_bodytype === 'MEDIUM' ? '中型' : '大型')
         out.color = animal.animal_colour
-        out.variety = (animal.animal_Variety.includes('混種貓') || (animal.animal_Variety.includes('混種犬'))) ? '米克斯' : animal.animal_Variety.trim()
+        out.variety = (animal.animal_Variety.includes('混種貓') || (animal.animal_Variety.includes('混種犬')) || (animal.animal_Variety.includes('混種狗'))) ? '米克斯' : animal.animal_Variety.trim()
         out.gender = animal.animal_sex === 'M' ? '公' : (animal.animal_sex === 'F' ? '母' : '未輸入')
         out.kind = animal.animal_kind === '狗' ? '犬' : (animal.animal_kind === '貓' ? '貓' : '其他')
         // 此id為收容編號
@@ -347,7 +349,9 @@ bot.on('message', async (e) => {
           // 收容所地址
           out.body.contents[1].contents[4].contents[1].text = write[i].add
           // 備註
-          out.body.contents[2].contents[0].contents[1].text = write[i].remark
+          out.body.contents[2].contents[0].contents[1].text = (`收容編號:${write[i].id}
+          ${write[i].remark}
+          `)
 
           const copyText = `---
       \n我的小名:${write[i].size + write[i].color + write[i].variety + write[i].gender + write[i].kind}\n收容編號:${write[i].id}\n開放認養時間:${write[i].opendate}
@@ -419,7 +423,9 @@ bot.on('message', async (e) => {
           // 收容所地址
           out.body.contents[1].contents[4].contents[1].text = num.add
           // 備註
-          out.body.contents[2].contents[0].contents[1].text = num.remark
+          out.body.contents[2].contents[0].contents[1].text = (`收容編號:${num.id}
+          ${num.remark}
+          `)
 
           const copyText = `---
       \n我的小名:${num.size + num.color + num.variety + num.gender + num.kind}\n收容編號:${num.id}\n開放認養時間:${num.opendate}
